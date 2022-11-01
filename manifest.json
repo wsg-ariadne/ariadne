@@ -1,0 +1,10 @@
+{
+    "manifest_version": 3,
+    "name": "Ariadne (placeholder)",
+    "description": "Get alerted to deceptive design patterns on the web",
+    "version": "0.0.1",
+    "action": {
+        "default_popup": "popup/index.html",
+        "default_icon": "images/yarn.png"
+    }
+}
