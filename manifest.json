@@ -6,5 +6,8 @@
     "action": {
         "default_popup": "popup/index.html",
         "default_icon": "images/yarn.png"
+    },
+    "background": {
+        "service_worker": "background.js"
     }
 }
