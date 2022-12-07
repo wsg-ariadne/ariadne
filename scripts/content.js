@@ -1,27 +1,21 @@
-/*
-    The page content is accessible via the "document" variable.
-    Following code is taken as example from https://developer.chrome.com/docs/extensions/mv3/getstarted/tut-reading-time/
-*/
-
-const article = document.querySelector("article");
-
-// `document.querySelector` may return null if the selector doesn't match anything.
-if (article) {
-    const text = article.textContent;
-    const wordMatchRegExp = /[^\s]+/g; // Regular expression
-    const words = text.matchAll(wordMatchRegExp);
-    // matchAll returns an iterator, convert to array to get word count
-    const wordCount = [...words].length;
-    const readingTime = Math.round(wordCount / 200);
-    const badge = document.createElement("p");
-    // Use the same styling as the publish information in an article's header
-    badge.classList.add("color-secondary-text", "type--caption");
-    badge.textContent = `⏱️ ${readingTime} min read | Calculated by Ariadne`;
-
-    // Support for API reference docs
-    const heading = article.querySelector("h1");
-    // Support for article docs with date
-    const date = article.querySelector("time")?.parentNode;
-
-    (date ?? heading).insertAdjacentElement("afterend", badge);
-}
+// Receive messages from background script
+chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
+    console.log('this is ariadne. you switched to this tab and i am now in it');
+    if (request.action === "on_focus") {
+        console.log("received on_focus request from background script");
+        // Look for occurrences of the word "cookies" and enable detection if found
+        const text = document.body.textContent;
+        const cookiesRegExp = /cookies/gi;
+        if (text.match(cookiesRegExp)) {
+            (async () => {
+                const response = await chrome.runtime.sendMessage({action: "enable_detection"});
+                console.log('live from the background script: "' + response + '"');
+            })();
+        } else {
+            (async () => {
+                const response = await chrome.runtime.sendMessage({action: "disable_detection"});
+                console.log('live from the background script: "' + response + '"');
+            })();
+        }
+    }
+});
