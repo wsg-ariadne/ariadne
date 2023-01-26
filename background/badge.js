@@ -19,12 +19,10 @@ function toggleBadge(state) {
 // Set badge to "OFF" with grey background on install
 chrome.runtime.onInstalled.addListener(() => toggleBadge(false));
 
-// Listen to messages from content scripts
+// Listen to updateBadge requests from content scripts
 chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
-  if (request.action === "enable_detection") {
-    toggleBadge(true);
-  } else if (request.action === "disable_detection") {
-    toggleBadge(false);
+  if (request.action === "updateBadge") {
+    toggleBadge(request.args.enabled);
   }
 });
 
