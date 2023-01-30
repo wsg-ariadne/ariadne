@@ -19,14 +19,21 @@ function toggleBadge(state) {
 // Set badge to "OFF" with grey background on install
 chrome.runtime.onInstalled.addListener(() => toggleBadge(false));
 
-// Listen to updateBadge requests from content scripts
+// Keep a dictionary of tabId -> enabled state
+const tabStates = {};
+
+// Listen to updateBadge requests
 chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
+  console.log("[badge] Received message", request, sender);
   if (request.action === "updateBadge") {
     toggleBadge(request.args.enabled);
+
+    // Update the tab state
+    tabStates[sender.tab.id] = request.args.enabled;
   }
 });
 
-// Send a message to the active tab's content script
+// Update badge on tab change
 chrome.tabs.onActivated.addListener((activeInfo) => {
-  chrome.tabs.sendMessage(activeInfo.tabId, {action: "on_focus"});
+  toggleBadge(tabStates[activeInfo.tabId]);
 });
