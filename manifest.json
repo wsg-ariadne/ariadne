@@ -16,6 +16,12 @@
         {
             "js": ["scripts/content.js"],
             "matches": ["*://*/*"],
+            "exclude_matches": ["*://*.inquirer.net/*"],
+            "run_at": "document_idle"
+        },
+        {
+            "js": ["scripts/inquirer.net.js"],
+            "matches": ["https://inquirer.net/*", "https://*.inquirer.net/*"],
             "run_at": "document_idle"
         }
     ]
