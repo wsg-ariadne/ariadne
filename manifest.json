@@ -16,6 +16,17 @@
         {
             "js": ["scripts/content.js"],
             "matches": ["*://*/*"],
+            "exclude_matches": ["*://*.inquirer.net/*", "*://*.kurzgesagt.org/*"],
+            "run_at": "document_idle"
+        },
+        {
+            "js": ["scripts/inquirer.net.js"],
+            "matches": ["https://*.inquirer.net/*"],
+            "run_at": "document_idle"
+        },
+        {
+            "js": ["scripts/kurzgesagt.org.js"],
+            "matches": ["https://*.kurzgesagt.org/*"],
             "run_at": "document_idle"
         }
     ]
