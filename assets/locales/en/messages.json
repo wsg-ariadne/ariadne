@@ -1,0 +1,11 @@
+{
+    "appName": {
+        "message": "ariadne"
+    },
+    "appShortName": {
+        "message": "ariadne"
+    },
+    "appDescription": {
+        "message": "Detect deceptive design on the Web"
+    }
+}
