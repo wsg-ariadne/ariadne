@@ -60,6 +60,7 @@ print("Classifier accuracy rate: ",(nltk.classify.accuracy(classifier, test_set)
 # Show the most important features as interpreted by Naive Bayes
 # classifier.show_most_informative_features(5)
 
+# Not working: gets attribute error 
 save_classifier = open('calliope.pickle', 'wb')
-pickle.dump(classifier, save_classifier)
+pickle.dump(classifier, save_classifier) 
 save_classifier.close()
