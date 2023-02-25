@@ -60,7 +60,12 @@ print("Classifier accuracy rate: ",(nltk.classify.accuracy(classifier, test_set)
 # Show the most important features as interpreted by Naive Bayes
 # classifier.show_most_informative_features(5)
 
-# Not working: gets attribute error 
+# Pickling works
 save_classifier = open('calliope.pickle', 'wb')
 pickle.dump(classifier, save_classifier) 
 save_classifier.close()
+
+# This is how it's used
+calliope = pickle.load(open('calliope.pickle', 'rb'))
+test_banner = data[random.randint(0,5)][0]
+print("'"+ test_banner + "' is " + calliope.classify(document_features(test_banner.split())))
