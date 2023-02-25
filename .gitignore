@@ -105,3 +105,6 @@ dist
 
 # macOS crap
 **/.DS_Store
+
+# Python bytecode
+**/*.py[cod]
