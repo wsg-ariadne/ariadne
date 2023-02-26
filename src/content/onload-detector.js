@@ -9,7 +9,7 @@ document.onreadystatechange = () => {
         const position = computedStyle.position;
         return computedStyle.zIndex > 0 && (position === "fixed" || position === "absolute" || position === "sticky");
     });
-    console.log("found floating divs", floatingDivs);
+    console.log("[content] Found floating divs", floatingDivs);
 
     // Look for the words "cookies", "consent", or "trackers" in the div's text
     for (let i = 0; i < floatingDivs.length; i++) {
@@ -25,6 +25,8 @@ document.onreadystatechange = () => {
                         body: divText,
                         url: window.location.href
                     }
+                }, (response) => {
+                    console.log("[content] Detection result from API:", response);
                 });
             })();
             break;
