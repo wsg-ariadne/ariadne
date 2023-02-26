@@ -48,6 +48,12 @@
                 "name": "content",
                 "src": "./src/content/*.js"
             }
+        ],
+        "scss_bundles": [
+            {
+                "name": "popup",
+                "src": "./src/popup/*.scss"
+            }
         ]
     }
 }
