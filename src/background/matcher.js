@@ -1,4 +1,4 @@
-const API_BASE_URL = 'https://ariadne.dantis.me/api/v1';
+import API_BASE_URL from './_constants';
 
 // Listen to detection requests from content scripts
 chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
