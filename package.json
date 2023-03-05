@@ -54,7 +54,8 @@
                 "name": "popup",
                 "src": "./src/popup/*.scss"
             }
-        ]
+        ],
+        "commands": "npm install --prefix ./src/popup && npm run build --prefix ./src/popup"
     },
     "dependencies": {
         "html2canvas": "^1.4.1"
