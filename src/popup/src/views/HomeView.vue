@@ -7,8 +7,10 @@ const store = useAriadneStore()
 
 <template>
   <main>
-    <p>Actions for {{ store.url }}</p>
-    
+    <p class="text-center mb-4">Actions for
+      <span class="font-bold text-white">{{ store.url }}</span>
+    </p>
+
     <!-- Report false negative -->
     <RouterLink to="/false-negative">
       <BigButton class="w-full mb-4">
