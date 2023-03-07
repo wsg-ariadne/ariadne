@@ -4,23 +4,21 @@ import { ArrowLeftIcon } from '@heroicons/vue/24/solid'
 </script>
 
 <template>
-  <header class="flex p-2 justify-between items-center">
+  <!-- Header for root path -->
+  <header v-if="$route.path === '/'" class="flex justify-center items-center">
     <!-- App logo -->
-    <div v-if="$route.path == '/'" class="flex flex-1 items-center justify-center">
-      <img class="h-4 m-auto dark:brightness-0 dark:invert" src="@/assets/logotype.svg" alt="Logo" />
-    </div>
+    <img class="h-4 m-auto dark:brightness-0 dark:invert" src="@/assets/logotype.svg" alt="ariadne" />
+  </header>
 
-    <div v-else>
-      <!-- Back icon that only appears when not at root -->
-      <RouterLink to="/">
-        <ArrowLeftIcon class="h-4 w-4 m-2 flex-none text-white" />
-      </RouterLink>
-      
-      <!-- Page title -->
-      <div class="flex flex-1 items-center ml-2">
-        <h1 class="text-white align-middle text-lg font-bold">{{ $route.meta.title }}</h1>
-      </div>
-    </div>
+  <!-- Header for non-root paths -->
+  <header v-else class="flex p-2 justify-between items-center">
+    <!-- Back icon -->
+    <RouterLink to="/" class="flex-none">
+      <ArrowLeftIcon class="h-4 w-4 m-2 text-white" />
+    </RouterLink>
+    
+    <!-- Page title -->
+    <h1 class="flex-1 items-center ml-2 text-white align-middle text-lg font-bold">{{ $route.meta.title }}</h1>
   </header>
 </template>
 
