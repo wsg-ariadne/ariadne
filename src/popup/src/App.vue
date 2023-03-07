@@ -33,7 +33,13 @@ export default defineComponent({
 
   // Detect current tab's URL on load using Chrome's API
   mounted() {
+    // Check if we're running in Chrome in the first place
+    if (!chrome || !chrome.tabs) {
+      return
+    }
+
     const store = useAriadneStore()
+    store.setRunningInExtension(true)
     chrome.tabs.query({ active: true, currentWindow: true }, (tabs) => {
       const url = tabs[0].url
       store.setUrl(url)

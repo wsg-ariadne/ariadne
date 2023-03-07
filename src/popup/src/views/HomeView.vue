@@ -8,7 +8,7 @@ const store = useAriadneStore()
 <template>
   <main>
     <p class="text-center mb-4">Actions for
-      <span class="font-bold text-white">{{ store.url }}</span>
+      <span class="font-bold text-white">{{ store.isRunningInExtension ? store.url : "(site name)" }}</span>
     </p>
 
     <!-- Report false negative -->
