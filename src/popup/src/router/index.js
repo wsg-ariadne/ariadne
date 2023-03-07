@@ -19,7 +19,7 @@ const router = createRouter({
     {
       path: '/false-negative',
       name: 'false-negative',
-      title: 'Report Deceptive Design',
+      meta: { title: 'Report Deceptive Design' },
       // route level code-splitting
       // this generates a separate chunk (About.[hash].js) for this route
       // which is lazy-loaded when the route is visited.
