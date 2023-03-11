@@ -9,7 +9,7 @@
           focus:ring-2 dark:bg-gray-700 dark:border-gray-600"
         />
         <span
-          class="ml-3 text-md leading-5 text-white"
+          class="ml-3 text-md leading-5 text-white select-none"
           :class="{
             'font-bold text-cyan-300': value,
             'font-normal': !value
