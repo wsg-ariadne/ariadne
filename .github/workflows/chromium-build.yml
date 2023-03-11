@@ -26,3 +26,4 @@ jobs:
         with:
           name: ariadne-chromium
           path: release.zip
+        if: github.event_name != 'pull_request'
