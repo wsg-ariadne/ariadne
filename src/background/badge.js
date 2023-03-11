@@ -17,7 +17,7 @@ function toggleBadge(state) {
 }
 
 // Set badge to "OFF" with grey background on install
-chrome.runtime.onInstalled.addListener(() => toggleBadge(false));
+// chrome.runtime.onInstalled.addListener(() => toggleBadge(false));
 
 // Keep a dictionary of tabId -> enabled state
 const tabStates = {};
