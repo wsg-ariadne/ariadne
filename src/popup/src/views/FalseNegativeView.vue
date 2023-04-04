@@ -119,7 +119,7 @@ export default defineComponent({
 
       // Send report to backend via POST
       this.isLoading = true
-      fetch('https://ariadne.dantis.me/api/v1/report', {
+      fetch(import.meta.env.VITE_API_URL + '/api/v1/report', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json'
