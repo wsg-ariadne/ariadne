@@ -1,10 +1,8 @@
 // Listen to visual detection requests from content scripts
 chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
-  console.log('[visualmatcher] Received message from tab', sender.tab.id, 'with action:', request.action);
-
   if (request.action === "visualDetection") {
     const imageData = request.args.screenshot;
-    console.log('[visualmatcher] Detection request received from tab', sender.tab.id, 'with image data:', imageData);
+    console.log('[visualmatcher] Detection request received from tab', sender.tab.id);
     
     // POST to API
     const detectionResult = fetch('https://ariadne.dantis.me/api/v1/classify/image', {
