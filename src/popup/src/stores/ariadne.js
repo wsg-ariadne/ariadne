@@ -5,6 +5,7 @@ export const useAriadneStore = defineStore('ariadne', {
     currentDomain: '',
     currentFavicon: '',
     currentPath: '',
+    currentURL: '',
     isRunningInExtension: false
   }),
   actions: {
@@ -16,6 +17,9 @@ export const useAriadneStore = defineStore('ariadne', {
     },
     setPath(path) {
       this.currentPath = path;
+    },
+    setURL(url) {
+      this.currentURL = url;
     },
     setRunningInExtension(isRunningInExtension) {
       this.isRunningInExtension = isRunningInExtension;
