@@ -2,12 +2,20 @@ import { defineStore } from 'pinia'
 
 export const useAriadneStore = defineStore('ariadne', {
   state: () => ({
-    url: '',
+    currentDomain: '',
+    currentFavicon: '',
+    currentPath: '',
     isRunningInExtension: false
   }),
   actions: {
-    setUrl(url) {
-      this.url = url;
+    setDomain(domain) {
+      this.currentDomain = domain;
+    },
+    setFavicon(favicon) {
+      this.currentFavicon = favicon;
+    },
+    setPath(path) {
+      this.currentPath = path;
     },
     setRunningInExtension(isRunningInExtension) {
       this.isRunningInExtension = isRunningInExtension;
