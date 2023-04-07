@@ -1,16 +1,7 @@
 <template>
   <main>
     <!-- Overlay for submission loading icon -->
-    <div
-      v-show="isLoading"
-      class="fixed inset-0 bg-black bg-opacity-50 z-10 select-none"
-    >
-      <div class="absolute inset-0 flex items-center justify-center">
-        <ArrowPathIcon
-          class="h-16 w-16 animate-spin text-white-900"
-        />
-      </div>
-    </div>
+    <LoadingOverlay :visible="isLoading" />
 
     <!-- Title -->
     <h1 class="text-2xl font-mono font-bold mb-4">Report deceptive design</h1>
@@ -68,16 +59,16 @@
 <script>
 import { defineComponent } from 'vue'
 import { useAriadneStore } from '@/stores/ariadne'
-import { ArrowPathIcon } from '@heroicons/vue/24/solid'
 import BigButton from '@/components/BigButton.vue'
 import Checkbox from '@/components/Checkbox.vue'
+import LoadingOverlay from '@/components/LoadingOverlay.vue'
 
 export default defineComponent({
   name: 'ReportPositiveView',
   components: {
-    ArrowPathIcon,
     BigButton,
-    Checkbox
+    Checkbox,
+    LoadingOverlay
   },
   data() {
     return {
