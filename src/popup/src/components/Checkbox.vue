@@ -32,13 +32,18 @@ export default defineComponent({
     label: {
       type: String,
       required: true
+    },
+    labelId: {
+      type: String,
+      required: false,
+      default: ''
     }
   },
   emits: ['update:value'],
   methods: {
     handleChange(e) {
       this.$emit('update:value', {
-        reason: this.label,
+        reason: this.labelId != '' ? this.labelId : this.label,
         checked: e.target.checked
       })
     }
