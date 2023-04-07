@@ -13,16 +13,16 @@
     </div>
 
     <!-- Title -->
-    <h1 class="text-3xl font-mono font-bold mb-4">Report deceptive design</h1>
+    <h1 class="text-2xl font-mono font-bold mb-4">Report deceptive design</h1>
 
     <!-- Page details -->
-    <h4 class="font-bold">Domain</h4>
-    <p class="font-mono w-full truncate">{{ store.currentDomain }}</p>
-    <h4 class="mt-4 font-bold">Path</h4>
-    <p class="font-mono w-full truncate">{{ store.currentPath }}</p>
+    <h4 class="font-bold text-sm">Domain</h4>
+    <p class="font-mono text-base w-full truncate">{{ store.currentDomain }}</p>
+    <h4 class="mt-4 font-bold text-sm">Path</h4>
+    <p class="font-mono text-base w-full truncate">{{ store.currentPath }}</p>
 
     <!-- Types of deceptive design -->
-    <h4 class="mt-4 font-bold">Types (select all that apply)</h4>
+    <h4 class="mt-4 font-bold text-sm">Types (select all that apply)</h4>
     <div class="mt-4">
       <Checkbox
         v-for="reason in reasons"

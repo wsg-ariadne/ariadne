@@ -11,11 +11,11 @@ const store = useAriadneStore()
     <!-- Favicon and domain name -->
     <div class="mb-4 flex justify-between items-center">
       <img
-        class="w-6 h-6 mr-6 shrink-0"
+        class="w-6 h-6 mr-4 shrink-0"
         :src="store.currentFavicon"
         alt="Favicon"
       />
-      <h1 class="grow font-mono font-bold text-3xl truncate">
+      <h1 class="grow font-mono font-bold text-2xl truncate">
         {{ store.currentDomain }}
       </h1>
     </div>
@@ -26,8 +26,8 @@ const store = useAriadneStore()
       <div class="flex flex-row justify-between items-center">
         <!-- Specific reports -->
         <div>
-          <h2 class="text-2xl font-bold">{{ specificReports }} report{{ specificReports != 1 ? 's' : '' }}</h2>
-          <p>for this webpage</p>
+          <h2 class="text-xl font-bold">{{ specificReports }} report{{ specificReports != 1 ? 's' : '' }}</h2>
+          <p class="text-sm">for this webpage</p>
         </div>
 
         <!-- Vertical divider -->
@@ -35,8 +35,8 @@ const store = useAriadneStore()
 
         <!-- General reports -->
         <div class="text-right">
-          <h2 class="text-2xl font-bold">{{ generalReports }} report{{ generalReports != 1 ? 's' : '' }}</h2>
-          <p>for this domain</p>
+          <h2 class="text-xl font-bold">{{ generalReports }} report{{ generalReports != 1 ? 's' : '' }}</h2>
+          <p class="text-sm">for this domain</p>
         </div>
       </div>
 
@@ -47,7 +47,7 @@ const store = useAriadneStore()
           :key="reportType.name"
           class="flex flex-row justify-between items-center mb-2"
         >
-          <h3 class="text-lg">{{ reportType.name }}</h3>
+          <h3 class="text-base">{{ reportType.name }}</h3>
           <PillCount
             :highlighted="reportType.count > 0"
           >

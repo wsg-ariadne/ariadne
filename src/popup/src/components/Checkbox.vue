@@ -6,7 +6,7 @@ import { MinusIcon, PlusIcon } from '@heroicons/vue/24/outline'
   <div
     @click="handleChange"
     class="group rounded-lg box-border border-2 
-      px-6 py-4 flex flex-row justify-between items-start
+      px-4 py-3 flex flex-row justify-between items-start
       transition-colors cursor-pointer select-none"
     :class="{
       'bg-adn-dark border-adn-dark': isChecked,
@@ -14,10 +14,10 @@ import { MinusIcon, PlusIcon } from '@heroicons/vue/24/outline'
     }"
   >
     <div :class="isChecked ? 'text-white' : 'text-adn-dark'">
-      <h1 class="font-bold font-mono text-xl transition-colors">
+      <h1 class="font-bold font-mono text-lg transition-colors">
         <slot />
       </h1>
-      <p class="mt-2 transition-colors">
+      <p class="mt-2 transition-colors text-sm">
         <slot name="description" />
       </p>
     </div>

@@ -4,7 +4,7 @@ import { ArrowSmallRightIcon } from '@heroicons/vue/24/solid'
 
 <template>
   <button class="group rounded-lg box-border border-2 border-adn-border
-    bg-white px-6 py-4 flex flex-row justify-between items-center
+    bg-white px-4 py-3 flex flex-row justify-between items-center
     hover:border-adn-turquoise hover:bg-adn-turquoise transition-colors
     active:border-adn-teal active:bg-adn-teal cursor-pointer"
     :class="{
@@ -13,7 +13,7 @@ import { ArrowSmallRightIcon } from '@heroicons/vue/24/solid'
     }"
   >
     <div class="grow">
-      <h1 class="text-xl font-bold font-mono text-adn-dark"><slot></slot></h1>
+      <h1 class="text-lg font-bold font-mono text-adn-dark"><slot></slot></h1>
       <p><slot name="description"></slot></p>
     </div>
     <div

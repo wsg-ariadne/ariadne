@@ -4,7 +4,7 @@
     <Header />
 
     <!-- Router view -->
-    <div id="route-wrapper" class="px-6 pb-6 pt-3">
+    <div id="route-wrapper" class="px-6 pb-6 pt-3 font-sans">
       <RouterView />
     </div>
   </main>
@@ -37,7 +37,7 @@ export default defineComponent({
       // Save favicon URL to store
       chrome.tabs.query({ active: true, currentWindow: true }, (tabs) => {
         const faviconUrl = tabs[0].favIconUrl
-        store.setFaviconUrl(faviconUrl)
+        store.setFavicon(faviconUrl)
       })
 
       // Save URL to store
