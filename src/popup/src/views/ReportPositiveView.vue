@@ -143,7 +143,7 @@ export default defineComponent({
 
       // Send report to backend via POST
       this.isLoading = true
-      fetch(import.meta.env.VITE_API_URL + '/api/v1/report', {
+      fetch(import.meta.env.VITE_API_URL + '/api/v1/reports', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json'
@@ -151,7 +151,7 @@ export default defineComponent({
         body: JSON.stringify({
           deceptive_design_types: this.selectedReasons,
           custom_deceptive_design_type: this.customReason,
-          page_url: this.store.url,
+          page_url: 'http://' + this.store.currentDomain + this.store.currentPath,
           is_running_in_extension: this.store.isRunningInExtension
         })
       })
