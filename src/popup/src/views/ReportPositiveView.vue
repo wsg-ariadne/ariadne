@@ -49,8 +49,9 @@
       <!-- Form controls -->
       <div class="mt-8 grid gap-4 grid-rows-1 grid-cols-2">
         <!-- Submission button -->
-        <BigButton centered-text
-          :disabled="selectedReasons.length === 0 || (selectedReasons.includes('Others') && customReason.length === 0)"
+        <BigButton
+          centered-text
+          :disabled="selectedReasons.length === 0 || (selectedReasons.includes('other') && customReason.length === 0)"
           @click="submitReport">
           Submit
         </BigButton>

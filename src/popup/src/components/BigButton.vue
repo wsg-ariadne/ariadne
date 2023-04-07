@@ -3,13 +3,14 @@ import { ArrowSmallRightIcon } from '@heroicons/vue/24/solid'
 </script>
 
 <template>
-  <button class="group rounded-lg box-border border-2 border-adn-border
-    bg-white px-4 py-3 flex flex-row justify-between items-center
-    hover:border-adn-turquoise hover:bg-adn-turquoise transition-colors
-    active:border-adn-teal active:bg-adn-teal cursor-pointer"
+  <button class="group rounded-lg box-border border-2 border-adn-border select-none
+    bg-white transition-colors px-4 py-3 flex flex-row justify-between items-center
+    "
     :class="{
       'text-center': centeredText,
-      'text-left': !centeredText
+      'text-left': !centeredText,
+      'opacity-50 cursor-not-allowed': disabled,
+      'hover:border-adn-turquoise hover:bg-adn-turquoise active:border-adn-teal active:bg-adn-teal cursor-pointer': !disabled,
     }"
   >
     <div class="grow">
@@ -38,6 +39,10 @@ export default defineComponent({
       default: false
     },
     centeredText: {
+      type: Boolean,
+      default: false
+    },
+    disabled: {
       type: Boolean,
       default: false
     }
