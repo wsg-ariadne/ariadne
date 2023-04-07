@@ -7,13 +7,17 @@ module.exports = {
   theme: {
     extend: {
       colors: {
-        'adn-indigo': '#18134C',
-        'adn-indigo-s': '#110D35',
-        'adn-purple': '#8200FF',
-        'adn-purple-s': '#470C85',
-        'adn-cyan': '#06CDFF',
-        'adn-cyan-s': '#0A6C8A',
+        'adn-light': '#F7F0F0',
+        'adn-dark': '#2A272A',
+        'adn-purple': '#B677FA',
+        'adn-turquoise': '#66CED6',
+        'adn-teal': '#048BA8',
+        'adn-border': '#C1B4C1',
       },
+      fontFamily: {
+        'mono': ['IBM Plex Mono'],
+        'sans': ['IBM Plex Sans'],
+      }
     },
   },
   plugins: [],

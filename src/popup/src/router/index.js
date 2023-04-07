@@ -17,13 +17,13 @@ const router = createRouter({
       },
     },
     {
-      path: '/false-negative',
-      name: 'false-negative',
+      path: '/report-positive',
+      name: 'report-positive',
       meta: { title: 'Report Deceptive Design' },
       // route level code-splitting
       // this generates a separate chunk (About.[hash].js) for this route
       // which is lazy-loaded when the route is visited.
-      component: () => import('../views/FalseNegativeView.vue')
+      component: () => import('../views/ReportPositiveView.vue')
     }
   ]
 })

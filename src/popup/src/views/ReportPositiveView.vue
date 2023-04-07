@@ -13,43 +13,50 @@
     </div>
 
     <!-- Title -->
-    <h1 class="text-2xl text-white">Select reasons</h1>
+    <h1 class="text-3xl font-mono font-bold mb-4">Report deceptive design</h1>
+
+    <!-- Page details -->
+    <h4 class="font-bold">Domain</h4>
+    <p class="font-mono w-full truncate">{{ store.currentDomain }}</p>
+    <h4 class="mt-4 font-bold">Path</h4>
+    <p class="font-mono w-full truncate">{{ store.currentPath }}</p>
 
     <!-- Types of deceptive design -->
+    <h4 class="mt-4 font-bold">Types (select all that apply)</h4>
     <div class="mt-4">
       <Checkbox
         v-for="reason in reasons"
         :key="reason.key"
-        :label="reason.text"
-        :label-id="reason.key"
+        :checkbox-key="reason.key"
         :value="selectedReasons.includes(reason.key)"
         @update:value="handleReasonChange"
-        class="mb-2"
-      />
+        class="mb-4"
+      >
+        <template #default>{{ reason.text }}</template>
+        <template #description>{{ reason.description }}</template>
+      </Checkbox>
 
       <!-- Textarea for "others" option -->
       <div v-show="selectedReasons.includes('other')">
-        <div class="relative ml-8">
-          <textarea
-            class="w-full h-24 p-2 box-border rounded-lg bg-gray-100 dark:bg-gray-700 dark:text-white"
-            placeholder="Please specify"
-            v-model="customReason"
-            ref="customReasonArea"
-          ></textarea>
-        </div>
+        <textarea
+          class="w-full h-24 p-2 box-border rounded-lg bg-white"
+          placeholder="Tell us more..."
+          v-model="customReason"
+          ref="customReasonArea"
+        ></textarea>
       </div>
 
       <!-- Form controls -->
-      <div class="mt-4 grid gap-4 grid-rows-1 grid-cols-2">
+      <div class="mt-8 grid gap-4 grid-rows-1 grid-cols-2">
         <!-- Submission button -->
-        <BigButton
+        <BigButton centered-text
           :disabled="selectedReasons.length === 0 || (selectedReasons.includes('Others') && customReason.length === 0)"
           @click="submitReport">
           Submit
         </BigButton>
 
         <!-- Cancel button -->
-        <BigButton @click="submitReport">
+        <BigButton centered-text @click="$router.go(-1)">
           Cancel
         </BigButton>
       </div>
@@ -65,7 +72,7 @@ import BigButton from '@/components/BigButton.vue'
 import Checkbox from '@/components/Checkbox.vue'
 
 export default defineComponent({
-  name: 'FalseNegativeView',
+  name: 'ReportPositiveView',
   components: {
     ArrowPathIcon,
     BigButton,
@@ -82,10 +89,26 @@ export default defineComponent({
     return {
       store: useAriadneStore(),
       reasons: [
-        { text: 'Unclear language on cookie banner', key: 'unclear_language' },
-        { text: 'Weighted options', key: 'weighted_options' },
-        { text: 'Pre-filled options', key: 'prefilled_options' },
-        { text: 'Others', key: 'other' }
+        {
+          key: 'unclear_language',
+          text: 'Unclear language',
+          description: 'The cookie banner does not explicitly or clearly ask for my consent to use cookies'
+        },
+        {
+          key: 'prefilled_options',
+          text: 'Pre-filled options',
+          description: 'The cookie banner has options that were filled out for me, e.g., pre-checked checkboxes for different types of cookies'
+        },
+        {
+          key: 'weighted_options',
+          text: 'Weighted options',
+          description: 'The controls on the cookie banner are weighted, i.e., designed to bring more visual emphasis on one option over another'
+        },
+        {
+          key: 'other',
+          text: 'Others',
+          description: 'I noticed another type of deceptive design on the cookie banner that wasn\'t included above'
+        }
       ]
     }
   },
@@ -93,10 +116,10 @@ export default defineComponent({
     handleReasonChange(args) {
       if (args.checked) {
         console.log({args})
-        this.selectedReasons.push(args.reason)
+        this.selectedReasons.push(args.key)
 
         // If "Others" is selected, clear the custom reason and focus the textarea
-        if (args.reason === 'other') {
+        if (args.key === 'other') {
           this.customReason = ''
           setTimeout(() => {
             this.$refs.customReasonArea.focus()
@@ -104,7 +127,7 @@ export default defineComponent({
         }
       } else {
         this.selectedReasons = this.selectedReasons.filter(
-          (r) => r !== args.reason
+          (r) => r !== args.key
         )
       }
     },

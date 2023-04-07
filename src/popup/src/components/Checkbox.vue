@@ -1,21 +1,31 @@
+<script setup>
+import { MinusIcon, PlusIcon } from '@heroicons/vue/24/outline'
+</script>
+
 <template>
-    <label class="flex items-center">
-        <input
-        type="checkbox"
-        v-model="value"
-        @change="handleChange"
-        class="w-5 h-5 text-blue-600 bg-gray-100 border-gray-300 rounded-lg
-          focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800
-          focus:ring-2 dark:bg-gray-700 dark:border-gray-600"
-        />
-        <span
-          class="ml-3 text-md leading-5 text-white select-none"
-          :class="{
-            'font-bold text-cyan-300': value,
-            'font-normal': !value
-          }"
-        >{{ label }}</span>
-    </label>
+  <div
+    @click="handleChange"
+    class="group rounded-lg box-border border-2 
+      px-6 py-4 flex flex-row justify-between items-start
+      transition-colors cursor-pointer select-none"
+    :class="{
+      'bg-adn-dark border-adn-dark': isChecked,
+      'bg-white border-adn-border': !isChecked
+    }"
+  >
+    <div :class="isChecked ? 'text-white' : 'text-adn-dark'">
+      <h1 class="font-bold font-mono text-xl transition-colors">
+        <slot />
+      </h1>
+      <p class="mt-2 transition-colors">
+        <slot name="description" />
+      </p>
+    </div>
+    <div class="shrink-0 ml-2">
+      <MinusIcon v-if="isChecked" class="h-6 w-6 text-white" />
+      <PlusIcon v-else class="h-6 w-6 text-adn-dark" />
+    </div>
+  </div>
 </template>
 
 <script>
@@ -25,26 +35,22 @@ export default defineComponent({
   name: 'Checkbox',
   data() {
     return {
-      value: false
+      isChecked: false
     }
   },
   props: {
-    label: {
+    checkboxKey: {
       type: String,
       required: true
-    },
-    labelId: {
-      type: String,
-      required: false,
-      default: ''
     }
   },
   emits: ['update:value'],
   methods: {
     handleChange(e) {
+      this.isChecked = !this.isChecked
       this.$emit('update:value', {
-        reason: this.labelId != '' ? this.labelId : this.label,
-        checked: e.target.checked
+        key: this.checkboxKey,
+        checked: this.isChecked
       })
     }
   }
