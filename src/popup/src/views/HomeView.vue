@@ -1,13 +1,8 @@
-<script setup>
-import BigButton from '@/components/BigButton.vue'
-import PillCount from '@/components/PillCount.vue'
-import { useAriadneStore } from '@/stores/ariadne'
-
-const store = useAriadneStore()
-</script>
-
 <template>
   <main>
+    <!-- Loading overlay -->
+    <LoadingOverlay :visible="isLoading" />
+
     <!-- Favicon and domain name -->
     <div class="mb-4 flex justify-between items-center">
       <img
@@ -76,31 +71,80 @@ const store = useAriadneStore()
 
 <script>
 import { defineComponent } from 'vue'
+import { useAriadneStore } from '@/stores/ariadne'
+import BigButton from '@/components/BigButton.vue'
+import LoadingOverlay from '@/components/LoadingOverlay.vue'
+import PillCount from '@/components/PillCount.vue'
 
 export default defineComponent({
   name: 'HomeView',
+  components: {
+    BigButton,
+    LoadingOverlay,
+    PillCount
+  },
+  setup() {
+    return {
+      store: useAriadneStore()
+    }
+  },
   data() {
     return {
-      'specificReports': 3,
-      'generalReports': 3,
-      'types': {
-        'unclear_language': {
-          'name': 'Unclear language',
-          'count': 1
+      isLoading: true,
+      specificReports: 0,
+      generalReports: 0,
+      types: {
+        unclearLanguage: {
+          name: 'Unclear language',
+          count: 0
         },
-        'prefilled_options': {
-          'name': 'Pre-filled options',
-          'count': 2
+        prefilledOptions: {
+          name: 'Pre-filled options',
+          count: 0
         },
-        'weighted_options': {
-          'name': 'Weighted options',
-          'count': 0
+        weightedOptions: {
+          name: 'Weighted options',
+          count: 0
         },
-        'other': {
-          'name': 'Others',
-          'count': 0
+        other: {
+          name: 'Others',
+          count: 0
         }
       }
+    }
+  },
+  mounted() {
+    // Check if we're running in Chrome in the first place
+    if (chrome && chrome.tabs) {
+      this.store.setRunningInExtension(true)
+      
+      chrome.tabs.query({ active: true, currentWindow: true }, (tabs) => {
+        // Save favicon URL to store
+        this.store.setFavicon(tabs[0].favIconUrl)
+
+        // Save URL, domain, and path in store
+        const url = tabs[0].url
+        const urlObject = new URL(url)
+        this.store.setURL(url)
+        this.store.setDomain(urlObject.hostname)
+        this.store.setPath(urlObject.pathname)
+
+        // Request stats from Dionysus API
+        chrome.runtime.sendMessage({
+          action: 'requestStats',
+          args: { url }
+        }, (response) => {
+          this.generalReports = response.general_reports.count
+          this.specificReports = response.specific_reports.count
+          this.types.unclearLanguage.count = response.specific_reports.by_type.unclear_language
+          this.types.prefilledOptions.count = response.specific_reports.by_type.prefilled_options
+          this.types.weightedOptions.count = response.specific_reports.by_type.weighted_options
+          this.types.other.count = response.specific_reports.by_type.other
+          this.isLoading = false
+        })
+      })
+    } else {
+      this.isLoading = false
     }
   }
 })

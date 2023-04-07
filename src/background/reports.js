@@ -15,7 +15,7 @@ chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
     }
     
     // Call Report API
-    fetch('http://localhost:5000/api/v1/reports/by-url', {
+    fetch('https://ariadne.dantis.me/api/v1/reports/by-url', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json'
