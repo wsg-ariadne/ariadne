@@ -1,32 +1,50 @@
 <script setup>
+import PillCount from '@/components/PillCount.vue'
 import { ArrowLeftIcon } from '@heroicons/vue/24/solid'
+import { Cog6ToothIcon } from '@heroicons/vue/24/outline'
 </script>
 
 <template>
-  <header class="flex items-center bg-adn-indigo h-12"
-    :class="{
-      'justify-center': $route.path === '/',
-      'justify-between p-2': $route.path !== '/'
-    }">
-    <!-- App logo -->
-    <img v-show="$route.path === '/'"
-    class="h-4 m-auto dark:brightness-0 dark:invert"
-    src="@/assets/logotype.svg"
-    alt="ariadne"
-    />
-
-    <!-- Back icon -->
-    <ArrowLeftIcon v-show="$route.path !== '/'"
-    @click="goBack"
-    class="h-6 w-6 p-1 m-2 flex-none text-white cursor-pointer"
-    />
+  <header class="flex justify-between items-center h-16 mx-6">
+    <!-- Navigation -->
+    <div>
+      <!-- Back icon -->
+      <div
+        v-show="$route.path !== '/'"
+        @click="goBack"
+        class="p-2 m-[-0.5rem] mr-2 inline-block align-middle rounded-lg 
+        hover:bg-adn-turquoise transition-colors cursor-pointer"
+      >
+        <ArrowLeftIcon
+          class="h-6 w-6 flex-none text-adn-dark"
+        />
+      </div>
+      
+      <!-- App logo -->
+      <img v-show="$route.path === '/'"
+        class="h-4 inline-block"
+        src="/assets/logotype.svg"
+        alt="ariadne"
+      />
+    </div>
     
-    <!-- Page title -->
-    <h1 v-show="$route.path !== '/'"
-    class="flex-1 items-center ml-2 text-white align-middle text-lg font-bold"
-    >
-      {{ $route.meta.title }}
-    </h1>
+    <!-- Controls -->
+    <div class="flex flex-row items-center justify-between">
+      <!-- Settings shortcut -->
+      <div
+        v-show="$route.path === '/'"
+        @click="$router.push('/settings')"
+        class="p-2 m-[-0.5rem] mr-1 rounded-lg 
+        hover:bg-adn-turquoise transition-colors cursor-pointer"
+      >
+        <Cog6ToothIcon
+          class="h-6 w-6 flex-none text-adn-dark"
+        />
+      </div>
+
+      <!-- Beta indicator -->
+      <PillCount compact>BETA</PillCount>
+    </div>
   </header>
 </template>
 

@@ -23,7 +23,7 @@ function toggleBadge(state) {
 const tabStates = {};
 
 // Listen to updateBadge requests
-chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
+chrome.runtime.onMessage.addListener((request, sender, _) => {
   console.log("[badge] Received message", request, sender);
   if (request.action === "updateBadge") {
     toggleBadge(request.args.enabled);

@@ -1,7 +1,5 @@
 // Listen to detection requests from content scripts
 chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
-  console.log('[matcher] Received message from tab', sender.tab.id, 'with action:', request.action);
-
   if (request.action === "detection") {
     const cookieBannerText = request.args.body;
     console.log('[matcher] Detection request received from tab', sender.tab.id, 'with body:', cookieBannerText);

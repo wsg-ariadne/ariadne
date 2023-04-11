@@ -1,26 +1,151 @@
-<script setup>
-import BigButton from '@/components/BigButton.vue'
-import { useAriadneStore } from '@/stores/ariadne'
-
-const store = useAriadneStore()
-</script>
-
 <template>
   <main>
-    <p class="text-center mb-4">Actions for
-      <span class="font-bold">{{ store.isRunningInExtension ? store.url : "(site name)" }}</span>
-    </p>
+    <!-- Loading overlay -->
+    <LoadingOverlay :visible="isLoading" />
 
-    <!-- Report false negative -->
-    <RouterLink to="/false-negative">
-      <BigButton class="w-full mb-4">
-        Report Deceptive Design
+    <!-- Favicon and domain name -->
+    <div class="mb-4 flex justify-between items-center">
+      <img
+        class="w-6 h-6 mr-4 shrink-0"
+        :src="store.currentFavicon"
+        alt="Favicon"
+      />
+      <h1 class="grow font-mono font-bold text-2xl truncate">
+        {{ store.currentDomain }}
+      </h1>
+    </div>
+
+    <!-- Statistics -->
+    <div class="mb-8">
+      <!-- Report count -->
+      <div class="flex flex-row justify-between items-center">
+        <!-- Specific reports -->
+        <div>
+          <h2 class="text-xl font-bold">{{ specificReports }} report{{ specificReports != 1 ? 's' : '' }}</h2>
+          <p class="text-sm">for this webpage</p>
+        </div>
+
+        <!-- Vertical divider -->
+        <div class="h-14 w-px bg-adn-border"></div>
+
+        <!-- General reports -->
+        <div class="text-right">
+          <h2 class="text-xl font-bold">{{ generalReports }} report{{ generalReports != 1 ? 's' : '' }}</h2>
+          <p class="text-sm">for this domain</p>
+        </div>
+      </div>
+
+      <!-- Report types -->
+      <div class="mt-4">
+        <div
+          v-for="reportType in types"
+          :key="reportType.name"
+          class="flex flex-row justify-between items-center mb-2"
+        >
+          <h3 class="text-base">{{ reportType.name }}</h3>
+          <PillCount
+            :highlighted="reportType.count > 0"
+          >
+            {{ reportType.count }}
+          </PillCount>
+        </div>
+      </div>
+    </div>
+
+    <!-- Report buttons -->
+    <div>
+      <!-- Report positive -->
+      <RouterLink to="/report-positive">
+        <BigButton arrow class="w-full mb-4">
+          There is deceptive design on this page
+        </BigButton>
+      </RouterLink>
+
+      <!-- Report negative -->
+      <BigButton arrow class="w-full">
+        No deceptive design on this page
       </BigButton>
-    </RouterLink>
-
-    <!-- Report false positive -->
-    <BigButton class="w-full">
-      Report Incorrect Detection
-    </BigButton>
+    </div>
   </main>
 </template>
+
+<script>
+import { defineComponent } from 'vue'
+import { useAriadneStore } from '@/stores/ariadne'
+import BigButton from '@/components/BigButton.vue'
+import LoadingOverlay from '@/components/LoadingOverlay.vue'
+import PillCount from '@/components/PillCount.vue'
+
+export default defineComponent({
+  name: 'HomeView',
+  components: {
+    BigButton,
+    LoadingOverlay,
+    PillCount
+  },
+  setup() {
+    return {
+      store: useAriadneStore()
+    }
+  },
+  data() {
+    return {
+      isLoading: true,
+      specificReports: 0,
+      generalReports: 0,
+      types: {
+        unclearLanguage: {
+          name: 'Unclear language',
+          count: 0
+        },
+        prefilledOptions: {
+          name: 'Pre-filled options',
+          count: 0
+        },
+        weightedOptions: {
+          name: 'Weighted options',
+          count: 0
+        },
+        other: {
+          name: 'Others',
+          count: 0
+        }
+      }
+    }
+  },
+  mounted() {
+    // Check if we're running in Chrome in the first place
+    if (chrome && chrome.tabs) {
+      this.store.setRunningInExtension(true)
+      
+      chrome.tabs.query({ active: true, currentWindow: true }, (tabs) => {
+        // Save favicon URL to store
+        this.store.setFavicon(tabs[0].favIconUrl)
+
+        // Save URL, domain, and path in store
+        const url = tabs[0].url
+        const urlObject = new URL(url)
+        this.store.setURL(url)
+        this.store.setDomain(urlObject.hostname)
+        this.store.setPath(urlObject.pathname)
+
+        // Request stats from Dionysus API
+        chrome.runtime.sendMessage({
+          action: 'requestStats',
+          args: { url }
+        }, (response) => {
+          this.generalReports = response.general_reports.count
+          this.specificReports = response.specific_reports.count
+          this.types.unclearLanguage.count = response.specific_reports.by_type.unclear_language
+          this.types.prefilledOptions.count = response.specific_reports.by_type.prefilled_options
+          this.types.weightedOptions.count = response.specific_reports.by_type.weighted_options
+          this.types.other.count = response.specific_reports.by_type.other
+          this.isLoading = false
+        })
+      })
+    } else {
+      this.isLoading = false
+    }
+  }
+})
+</script>
