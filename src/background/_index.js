@@ -146,16 +146,19 @@ class AriadneBackground {
   }
 
   updateBadgeText(stats) {
-    const count = stats["specific_reports"]["count"];
-    if (count > 0) {
-      chrome.action.setBadgeText({
-        text: count.toString(),
-      });
-    } else {
-      chrome.action.setBadgeText({
-        text: "0",
-      });
+    if (stats !== undefined && stats.hasOwnProperty("success") &&
+      stats.hasOwnProperty("specific_reports") && !stats["success"]) {
+      const count = stats["specific_reports"]["count"];
+      if (count > 0) {
+        chrome.action.setBadgeText({
+          text: count.toString(),
+        });
+        return;
+      }
     }
+    chrome.action.setBadgeText({
+      text: "0",
+    });
   }
 }
 
