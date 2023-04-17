@@ -9,7 +9,8 @@
     "default_locale": "en",
     "minimum_chrome_version": "88",
     "permissions": [
-        "tabs"
+        "tabs",
+        "management"
     ],
     "icons": {
         "128": "assets/img/Button@8x.png"

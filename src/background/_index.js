@@ -2,7 +2,17 @@ class AriadneBackground {
   constructor() {
     this._tabStates = [];
     this._reportStats = {};
-    this.addListeners();
+    this._API_URL = 'https://ariadne.dantis.me/api/v1';
+
+    // Determine if running in unpacked mode
+    const that = this;
+    chrome.management.get(chrome.runtime.id, function (extensionInfo) {
+      if (extensionInfo.installType === 'development') {
+        console.log('[sw] Running in development mode');
+        that._API_URL = 'http://localhost:5000/api/v1';
+      }
+      that.addListeners();
+    });
   }
 
   addListeners() {
@@ -25,7 +35,7 @@ class AriadneBackground {
         console.log('[sw] Detection request received from tab', sender.tab.id, 'with body:', cookieBannerText);
         
         // POST to API
-        const detectionResult = fetch('https://ariadne.dantis.me/api/v1/classify/text', {
+        const detectionResult = fetch(this._API_URL + '/classify/text', {
           method: 'POST',
           body: JSON.stringify({
             text: cookieBannerText
@@ -49,7 +59,7 @@ class AriadneBackground {
         console.log('[sw] Detection request received from tab', sender.tab.id);
         
         // POST to API
-        const detectionResult = fetch('https://ariadne.dantis.me/api/v1/classify/image', {
+        const detectionResult = fetch(this._API_URL + '/classify/image', {
           method: 'POST',
           body: JSON.stringify({
             text: imageData
@@ -80,7 +90,7 @@ class AriadneBackground {
         }
         
         // Call Report API
-        fetch('https://ariadne.dantis.me/api/v1/reports/by-url', {
+        fetch(this._API_URL + '/reports/by-url', {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json'
