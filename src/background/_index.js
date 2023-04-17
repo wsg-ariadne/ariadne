@@ -18,7 +18,12 @@ class AriadneBackground {
   addListeners() {
     // Update badge on tab change
     chrome.tabs.onActivated.addListener((activeInfo) => {
-      this.toggleBadge(this._tabStates[activeInfo.tabId]);
+      // Get URL of active tab
+      chrome.tabs.get(activeInfo.tabId, (tab) => {
+        console.log('[sw] Tab changed to', tab.url);
+        this.toggleBadge(this._tabStates[activeInfo.tabId]);
+        this.updateBadgeText(this._reportStats[tab.url]);
+      });
     });
 
     chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
@@ -102,6 +107,9 @@ class AriadneBackground {
           .then(response => response.json())
           .then(data => {
             console.log('[stats] Stats result from API:', data);
+
+            // Update badge text
+            this.updateBadgeText(data);
             
             // Save result to cache
             this._reportStats[tabUrl] = data;
@@ -113,25 +121,7 @@ class AriadneBackground {
           })
           .catch((error) => {
             console.error('Error:', error);
-
-            // Reply with dummy data
-            sendResponse({
-              "general_reports": {
-                "count": 0,
-                "last_report_timestamp": null
-              },
-              "specific_reports": {
-                "by_type": {
-                  "other": 0,
-                  "prefilled_options": 0,
-                  "unclear_language": 0,
-                  "weighted_options": 0
-                },
-                "count": 0,
-                "last_report_timestamp": null
-              },
-              "success": false
-            });
+            sendResponse({ "success": false });
           }
         );
       }
@@ -142,9 +132,6 @@ class AriadneBackground {
   
   toggleBadge(state) {
     if (state) {
-      chrome.action.setBadgeText({
-        text: "ON",
-      });
       chrome.action.setBadgeBackgroundColor({
         color: "#00AA00",
       });
@@ -154,6 +141,19 @@ class AriadneBackground {
       });
       chrome.action.setBadgeBackgroundColor({
         color: "#AAAAAA",
+      });
+    }
+  }
+
+  updateBadgeText(stats) {
+    const count = stats["specific_reports"]["count"];
+    if (count > 0) {
+      chrome.action.setBadgeText({
+        text: count.toString(),
+      });
+    } else {
+      chrome.action.setBadgeText({
+        text: "0",
       });
     }
   }
