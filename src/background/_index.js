@@ -40,7 +40,7 @@ class AriadneBackground {
         console.log('[sw] Detection request received from tab', sender.tab.id, 'with body:', cookieBannerText);
         
         // POST to API
-        const detectionResult = fetch(this._API_URL + '/classify/text', {
+        fetch(this._API_URL + '/classify/text', {
           method: 'POST',
           body: JSON.stringify({
             text: cookieBannerText
@@ -48,23 +48,18 @@ class AriadneBackground {
           headers: {
             'Content-Type': 'application/json'
           }
-        }).then((response) => {
-          return response.json();
-        }).then((data) => {
+        }).then((response) => response.json())
+          .then((data) => {
           console.log('[sw] Detection result from API:', data);
-          const result = data.result;
-
-          // Send result
-          sendResponse(result);
-          console.log('[sw] Detection result sent to tab', sender.tab.id, 'with result:', result);
+          sendResponse(data);
         });
       } else if (request.action === "visualDetection") {
         // Listen to visual detection requests from content scripts
         const imageData = request.args.screenshot;
-        console.log('[sw] Detection request received from tab', sender.tab.id);
+        console.log('[sw] Visual detection request received from tab', sender.tab.id);
         
         // POST to API
-        const detectionResult = fetch(this._API_URL + '/classify/image', {
+        fetch(this._API_URL + '/classify/image', {
           method: 'POST',
           body: JSON.stringify({
             text: imageData
@@ -72,15 +67,10 @@ class AriadneBackground {
           headers: {
             'Content-Type': 'application/json'
           }
-        }).then((response) => {
-          return response.json();
-        }).then((data) => {
+        }).then((response) => response.json())
+          .then((data) => {
           console.log('[sw] Detection result from API:', data);
-          const result = data.result;
-
-          // Send result
-          sendResponse(result);
-          console.log('[sw] Detection result sent to tab', sender.tab.id, 'with result:', result);
+          sendResponse(data);
         });
       } else if (request.action === "requestStats") {
         console.log("[sw] Received stats request from popup", request, sender);
@@ -136,9 +126,6 @@ class AriadneBackground {
         color: "#00AA00",
       });
     } else {
-      chrome.action.setBadgeText({
-        text: "OFF",
-      });
       chrome.action.setBadgeBackgroundColor({
         color: "#AAAAAA",
       });

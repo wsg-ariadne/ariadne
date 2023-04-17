@@ -35,7 +35,7 @@ function performDetection() {
                     return chrome.runtime.sendMessage({
                         action: "updateBadge",
                         args: {
-                            enabled: !response
+                            enabled: !response.is_good
                         }
                     });
                 });
