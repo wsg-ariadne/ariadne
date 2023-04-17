@@ -26,6 +26,16 @@ class AriadneBackground {
       });
     });
 
+    // Tab URL change listener
+    chrome.tabs.onUpdated.addListener((tabId, changeInfo, _) => {
+      if (changeInfo.url) {
+        // Request fresh stats
+        console.log('[sw] Tab ' + tabId + ' URL changed to', changeInfo.url);
+        this.getStats(changeInfo.url);
+      }
+    });
+
+    // Message listeners
     chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
       console.log("[sw] Received message with action", request.action);
       if (request.action === "updateBadge") {
@@ -83,37 +93,20 @@ class AriadneBackground {
           sendResponse(this._reportStats[tabUrl]);
           deferSending = true;
         }
-        
-        // Call Report API
-        fetch(this._API_URL + '/reports/by-url', {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json'
-          },
-          body: JSON.stringify({
-            'page_url': tabUrl
-          })
-        })
-          .then(response => response.json())
-          .then(data => {
-            console.log('[stats] Stats result from API:', data);
 
-            // Update badge text
-            this.updateBadgeText(data);
-            
-            // Save result to cache
-            this._reportStats[tabUrl] = data;
-            if (!deferSending) {
-              sendResponse(data);
-            } else {
-              console.log('[sw] Revalidating cache for tab', tabUrl, this._reportStats[tabUrl])
-            }
-          })
-          .catch((error) => {
-            console.error('Error:', error);
-            sendResponse({ "success": false });
+        this.getStats(tabUrl, (stats) => {
+          if (!deferSending) {
+            console.log('[sw] Sending stats to tab', tabUrl, this._reportStats[tabUrl])
+            sendResponse(stats);
+          } else {
+            console.log('[sw] Revalidated cache for tab', tabUrl, this._reportStats[tabUrl])
           }
-        );
+        }, (error) => {
+          sendResponse({
+            success: false,
+            error
+          });
+        });
       }
 
       return true;
@@ -133,9 +126,11 @@ class AriadneBackground {
   }
 
   updateBadgeText(stats) {
+    console.log('[sw] Updating badge text with stats:', stats);
     if (stats !== undefined && stats.hasOwnProperty("success") &&
-      stats.hasOwnProperty("specific_reports") && !stats["success"]) {
-      const count = stats["specific_reports"]["count"];
+      stats.hasOwnProperty("specific_reports") && stats["success"]) {
+      const count = stats.specific_reports.count;
+      console.log('[sw] Badge count:', count)
       if (count > 0) {
         chrome.action.setBadgeText({
           text: count.toString(),
@@ -146,6 +141,33 @@ class AriadneBackground {
     chrome.action.setBadgeText({
       text: "0",
     });
+  }
+
+  getStats(tabUrl, successCallback, errorCallback) {
+    fetch(this._API_URL + '/reports/by-url', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({
+        'page_url': tabUrl
+      })
+    })
+      .then((response) => response.json())
+      .then((data) => {
+        console.log('[sw] Report stats from API:', data);
+        this._reportStats[tabUrl] = data;
+
+        // Update badge text
+        this.updateBadgeText(data);
+
+        if (successCallback !== undefined) successCallback(data);
+      })
+      .catch((error) => {
+        console.error('[sw] Error fetching report stats:', error);
+        if (errorCallback !== undefined) errorCallback(error);
+      }
+    );
   }
 }
 
