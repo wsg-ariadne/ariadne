@@ -28,7 +28,9 @@
         "test/**/*"
     ],
     "devDependencies": {
-        "extension-cli": "latest"
+        "@types/webextension-polyfill": "^0.10.0",
+        "extension-cli": "latest",
+        "webextension-polyfill": "^0.10.0"
     },
     "xtdocs": {
         "source": {

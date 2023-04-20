@@ -75,6 +75,7 @@ import { useAriadneStore } from '@/stores/ariadne'
 import BigButton from '@/components/BigButton.vue'
 import LoadingOverlay from '@/components/LoadingOverlay.vue'
 import PillCount from '@/components/PillCount.vue'
+import * as browser from 'webextension-polyfill'
 
 export default defineComponent({
   name: 'HomeView',
@@ -115,34 +116,36 @@ export default defineComponent({
   },
   mounted() {
     // Check if we're running in Chrome in the first place
-    if (chrome && chrome.tabs) {
+    if (browser && browser.tabs) {
       this.store.setRunningInExtension(true)
       
-      chrome.tabs.query({ active: true, currentWindow: true }, (tabs) => {
-        // Save favicon URL to store
-        this.store.setFavicon(tabs[0].favIconUrl)
+      browser.tabs.query({ active: true, currentWindow: true })
+        .then((tabs) => {
+          // Save favicon URL to store
+          this.store.setFavicon(tabs[0].favIconUrl)
 
-        // Save URL, domain, and path in store
-        const url = tabs[0].url
-        const urlObject = new URL(url)
-        this.store.setURL(url)
-        this.store.setDomain(urlObject.hostname)
-        this.store.setPath(urlObject.pathname)
+          // Save URL, domain, and path in store
+          const url = tabs[0].url
+          const urlObject = new URL(url)
+          this.store.setURL(url)
+          this.store.setDomain(urlObject.hostname)
+          this.store.setPath(urlObject.pathname)
 
-        // Request stats from Dionysus API
-        chrome.runtime.sendMessage({
-          action: 'requestStats',
-          args: { url }
-        }, (response) => {
-          this.generalReports = response.general_reports.count
-          this.specificReports = response.specific_reports.count
-          this.types.unclearLanguage.count = response.specific_reports.by_type.unclear_language
-          this.types.prefilledOptions.count = response.specific_reports.by_type.prefilled_options
-          this.types.weightedOptions.count = response.specific_reports.by_type.weighted_options
-          this.types.other.count = response.specific_reports.by_type.other
-          this.isLoading = false
+          // Request stats from Dionysus API
+          browser.runtime.sendMessage({
+            action: 'requestStats',
+            args: { url }
+          })
+            .then((response) => {
+              this.generalReports = response.general_reports.count
+              this.specificReports = response.specific_reports.count
+              this.types.unclearLanguage.count = response.specific_reports.by_type.unclear_language
+              this.types.prefilledOptions.count = response.specific_reports.by_type.prefilled_options
+              this.types.weightedOptions.count = response.specific_reports.by_type.weighted_options
+              this.types.other.count = response.specific_reports.by_type.other
+              this.isLoading = false
+            })
         })
-      })
     } else {
       this.isLoading = false
     }

@@ -1,3 +1,5 @@
+import * as browser from 'webextension-polyfill';
+
 class AriadneBackground {
   constructor() {
     this._tabStates = [];
@@ -6,28 +8,30 @@ class AriadneBackground {
 
     // Determine if running in unpacked mode
     const that = this;
-    chrome.management.get(chrome.runtime.id, function (extensionInfo) {
-      if (extensionInfo.installType === 'development') {
-        console.log('[sw] Running in development mode');
-        that._API_URL = 'http://localhost:5000/api/v1';
-      }
-      that.addListeners();
-    });
+    browser.management.get(browser.runtime.id)
+      .then((extensionInfo) => {
+        if (extensionInfo.installType === 'development') {
+          console.log('[sw] Running in development mode');
+          that._API_URL = 'http://localhost:5000/api/v1';
+        }
+        that.addListeners();
+      });
   }
 
   addListeners() {
     // Update badge on tab change
-    chrome.tabs.onActivated.addListener((activeInfo) => {
+    browser.tabs.onActivated.addListener((activeInfo) => {
       // Get URL of active tab
-      chrome.tabs.get(activeInfo.tabId, (tab) => {
-        console.log('[sw] Tab changed to', tab.url);
-        this.toggleBadge(this._tabStates[activeInfo.tabId]);
-        this.updateBadgeText(this._reportStats[tab.url]);
-      });
+      browser.tabs.get(activeInfo.tabId)
+        .then((tab) => {
+          console.log('[sw] Tab changed to', tab.url);
+          this.toggleBadge(this._tabStates[activeInfo.tabId]);
+          this.updateBadgeText(this._reportStats[tab.url]);
+        });
     });
 
     // Tab URL change listener
-    chrome.tabs.onUpdated.addListener((tabId, changeInfo, _) => {
+    browser.tabs.onUpdated.addListener((tabId, changeInfo, _) => {
       if (changeInfo.url) {
         // Request fresh stats
         console.log('[sw] Tab ' + tabId + ' URL changed to', changeInfo.url);
@@ -36,7 +40,7 @@ class AriadneBackground {
     });
 
     // Message listeners
-    chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
+    browser.runtime.onMessage.addListener((request, sender, sendResponse) => {
       console.log("[sw] Received message with action", request.action);
       if (request.action === "updateBadge") {
         // Listen to updateBadge requests
@@ -115,11 +119,11 @@ class AriadneBackground {
   
   toggleBadge(state) {
     if (state) {
-      chrome.action.setBadgeBackgroundColor({
+      browser.action.setBadgeBackgroundColor({
         color: "#00AA00",
       });
     } else {
-      chrome.action.setBadgeBackgroundColor({
+      browser.action.setBadgeBackgroundColor({
         color: "#AAAAAA",
       });
     }
@@ -132,13 +136,13 @@ class AriadneBackground {
       const count = stats.specific_reports.count;
       console.log('[sw] Badge count:', count)
       if (count > 0) {
-        chrome.action.setBadgeText({
+        browser.action.setBadgeText({
           text: count.toString(),
         });
         return;
       }
     }
-    chrome.action.setBadgeText({
+    browser.action.setBadgeText({
       text: "0",
     });
   }
