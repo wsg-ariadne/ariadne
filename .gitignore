@@ -108,3 +108,4 @@ dist
 
 # Built extension
 release.zip
+*.local

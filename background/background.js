@@ -5,7 +5,7 @@ class AriadneBackground {
     this._tabStates = [];
     this._reportStats = {};
     this._API_URL = 'https://ariadne.dantis.me/api/v1';
-
+    
     // Determine if running in unpacked mode
     const that = this;
     browser.management.get(browser.runtime.id)
