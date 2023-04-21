@@ -11,8 +11,6 @@ class AriadneBackground {
     if (browser.action !== undefined) {
       this.BrowserAction = browser.action;
     }
-
-    this.addListeners();
   }
 
   addListeners() {
@@ -174,3 +172,4 @@ class AriadneBackground {
 }
 
 const ariadneBackground = new AriadneBackground();
+ariadneBackground.addListeners();
