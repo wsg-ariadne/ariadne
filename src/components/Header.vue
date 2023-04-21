@@ -43,7 +43,7 @@ import { Cog6ToothIcon } from '@heroicons/vue/24/outline'
       </div>
 
       <!-- Beta indicator -->
-      <PillCount compact>BETA</PillCount>
+      <PillCount compact>ALPHA</PillCount>
     </div>
   </header>
 </template>
