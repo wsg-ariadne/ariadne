@@ -1,14 +1,14 @@
 {
-  "name": "__MSG_appName__",
-  "short_name": "__MSG_appShortName__",
+  "name": "ariadne (Manifest V2)",
+  "short_name": "__MSG_appName__",
   "description": "__MSG_appDescription__",
   "homepage_url": "https://ariadne.dantis.me",
   "version": "0.0.1",
   "manifest_version": 2,
   "default_locale": "en",
   "permissions": [
-      "tabs",
-      "management"
+    "tabs",
+    "management"
   ],
   "optional_permissions": [
     "<all_urls>"
