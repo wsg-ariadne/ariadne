@@ -16,6 +16,12 @@ class AriadneBackground {
         }
         that.addListeners();
       });
+    
+    // Check if browser.action is not defined, i.e. this is Manifest V2
+    if (browser.action === undefined) {
+      // Alias browser.action to browser.browserAction
+      browser.action = browser.browserAction;
+    }
   }
 
   addListeners() {
@@ -27,6 +33,7 @@ class AriadneBackground {
           console.log('[bg] Tab changed to', tab.url);
           this.toggleBadge(this._tabStates[activeInfo.tabId]);
           this.updateBadgeText(this._reportStats[tab.url]);
+          this.getStats(tab.url);
         });
     });
 
