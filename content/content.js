@@ -87,12 +87,12 @@ document.onreadystatechange = () => {
     if (document.readyState !== "complete") { return; }
 
     // Call Report API for stats
-    (async () => await browser.runtime.sendMessage({
+    browser.runtime.sendMessage({
         action: "requestStats",
         args: { url: window.location.href }
-    }, (response) => {
+    }).then((response) => {
         console.log("[content] Stats result from Dionysus API:", response);
-    }))();
+    });
 
     // Wait for 5 sec
     console.log("[content] DOM is now ready, waiting for 5 sec before performing detection");
