@@ -14,9 +14,9 @@
     "build:content": "vite build --config vite.content.config.js",
     "build:main": "vite build",
     "build": "for TARGET in main bg content; do NODE_ENV=production npm run build:$TARGET; done",
-    "build:chrome": "npm run build && mv dist/manifest.v3.json dist/manifest.json",
-    "package:chrome": "npm run build:chrome && web-ext build --overwrite-dest --source-dir dist",
-    "package:firefox": "npm run build && web-ext build --overwrite-dest --source-dir dist --ignore-files \"**/manifest.v3.json\""
+    "build:v3": "npm run build && mv dist/manifest.v3.json dist/manifest.json",
+    "package": "npm run build && web-ext build --overwrite-dest --source-dir dist --ignore-files \"**/manifest.v3.json\"",
+    "package:v3": "npm run build:chrome && web-ext build --overwrite-dest --source-dir dist"
   },
   "dependencies": {
     "@heroicons/vue": "^2.0.16",
