@@ -29,5 +29,4 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
           file: "web-ext-artifacts/*.zip"
-          tags: true
         if: github.event_name != 'pull_request'
