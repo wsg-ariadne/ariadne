@@ -4,24 +4,15 @@ class AriadneBackground {
   constructor() {
     this._tabStates = [];
     this._reportStats = {};
-    this._API_URL = 'https://ariadne.dantis.me/api/v1';
-    
-    // Determine if running in unpacked mode
-    const that = this;
-    browser.management.get(browser.runtime.id)
-      .then((extensionInfo) => {
-        if (extensionInfo.installType === 'development') {
-          console.log('[bg] Running in development mode');
-          that._API_URL = 'http://localhost:5000/api/v1';
-        }
-        that.addListeners();
-      });
+    this._API_URL = import.meta.env.VITE_API_URL + '/api/v1';
     
     // Alias if browser.action is defined, i.e. in Manifest V3
     this.BrowserAction = browser.browserAction;
     if (browser.action !== undefined) {
       this.BrowserAction = browser.action;
     }
+
+    this.addListeners();
   }
 
   addListeners() {
