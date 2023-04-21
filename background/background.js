@@ -17,10 +17,10 @@ class AriadneBackground {
         that.addListeners();
       });
     
-    // Check if browser.action is not defined, i.e. this is Manifest V2
-    if (browser.action === undefined) {
-      // Alias browser.action to browser.browserAction
-      browser.action = browser.browserAction;
+    // Alias if browser.action is defined, i.e. in Manifest V3
+    this.BrowserAction = browser.browserAction;
+    if (browser.action !== undefined) {
+      this.BrowserAction = browser.action;
     }
   }
 
@@ -126,11 +126,11 @@ class AriadneBackground {
   
   toggleBadge(state) {
     if (state) {
-      browser.action.setBadgeBackgroundColor({
+      this.BrowserAction.setBadgeBackgroundColor({
         color: "#00AA00",
       });
     } else {
-      browser.action.setBadgeBackgroundColor({
+      this.BrowserAction.setBadgeBackgroundColor({
         color: "#AAAAAA",
       });
     }
@@ -143,13 +143,13 @@ class AriadneBackground {
       const count = stats.specific_reports.count;
       console.log('[bg] Badge count:', count)
       if (count > 0) {
-        browser.action.setBadgeText({
+        this.BrowserAction.setBadgeText({
           text: count.toString(),
         });
         return;
       }
     }
-    browser.action.setBadgeText({
+    this.BrowserAction.setBadgeText({
       text: "0",
     });
   }
