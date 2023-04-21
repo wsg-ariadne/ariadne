@@ -12,7 +12,7 @@
     "dev:bg": "vite build -m development --config vite.bg.config.js",
     "dev:content": "vite build -m development --config vite.content.config.js",
     "dev:main": "vite build -m development",
-    "dev": "for TARGET in main bg content; do npm run dev:$TARGET; done && rm dist/manifest.v3.json",
+    "dev": "for TARGET in main bg content; do npm run dev:$TARGET; done",
     "dev:v3": "OUT_DIR=dist-v3 npm run dev && mv dist-v3/manifest.v3.json dist-v3/manifest.json",
     "build:bg": "vite build --config vite.bg.config.js",
     "build:content": "vite build --config vite.content.config.js",
