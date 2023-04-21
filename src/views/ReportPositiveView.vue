@@ -42,7 +42,7 @@
         <!-- Submission button -->
         <BigButton
           centered-text
-          :disabled="selectedReasons.length === 0 || (selectedReasons.includes('other') && customReason.length === 0)"
+          :disabled="incompleteReport"
           @click="submitReport">
           Submit
         </BigButton>
@@ -75,6 +75,11 @@ export default defineComponent({
       selectedReasons: [],
       customReason: '',
       isLoading: false
+    }
+  },
+  computed: {
+    incompleteReport() {
+      return this.selectedReasons.length === 0 || (this.selectedReasons.includes('other') && this.customReason.length === 0)
     }
   },
   setup() {
@@ -125,6 +130,7 @@ export default defineComponent({
     },
     submitReport(e) {
       e.preventDefault()
+      if (this.incompleteReport) return
       console.log('Submitting report', {
         selectedReasons: this.selectedReasons,
         customReason: this.customReason,

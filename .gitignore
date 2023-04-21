@@ -106,5 +106,8 @@ dist
 # macOS crap
 **/.DS_Store
 
-# Built extension
-release.zip
+# Build artifacts
+web-ext-artifacts/
+
+# Local env variables
+*.local

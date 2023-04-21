@@ -1,4 +1,5 @@
 import html2canvas from 'html2canvas';
+import * as browser from 'webextension-polyfill';
 
 let bannerDiv = null;
 function performDetection() {
@@ -21,25 +22,27 @@ function performDetection() {
             console.log("[content] Found banner div:", bannerDiv);
             
             // Send div text to background script for detection
-            (async () => {
-                await chrome.runtime.sendMessage({
-                    action: "detection",
-                    args: {
-                        body: divText,
-                        url: window.location.href
-                    }
-                }, (response) => {
+            browser.runtime.sendMessage({
+                action: "detection",
+                args: {
+                    body: divText,
+                    url: window.location.href
+                }
+            })
+                .then((response) => {
                     console.log("[content] isGood result from Calliope API:", response);
 
                     // Update badge
-                    return chrome.runtime.sendMessage({
+                    return browser.runtime.sendMessage({
                         action: "updateBadge",
                         args: {
-                            enabled: !response
+                            enabled: !response.is_good
                         }
                     });
+                })
+                .then((response) => {
+                    console.log("[content] Badge updated:", response);
                 });
-            })();
             break;
         }
     }
@@ -59,20 +62,21 @@ function performDetection() {
             console.log("[content] Screenshot taken, sending to service worker");
 
             // Send screenshot to service worker for detection
-            return chrome.runtime.sendMessage({
+            browser.runtime.sendMessage({
                 action: "visualDetection",
                 args: { screenshot }
-            }, (response) => {
-                console.log("[content] isGood result from Calliope API:", response);
+            })
+                .then((response) => {
+                    console.log("[content] isGood result from Calliope API:", response);
 
-                // Update badge
-                return chrome.runtime.sendMessage({
-                    action: "updateBadge",
-                    args: {
-                        enabled: !response
-                    }
+                    // Update badge
+                    return browser.runtime.sendMessage({
+                        action: "updateBadge",
+                        args: {
+                            enabled: !response
+                        }
+                    });
                 });
-            });
         });
         return;
     }
@@ -83,7 +87,7 @@ document.onreadystatechange = () => {
     if (document.readyState !== "complete") { return; }
 
     // Call Report API for stats
-    (async () => await chrome.runtime.sendMessage({
+    (async () => await browser.runtime.sendMessage({
         action: "requestStats",
         args: { url: window.location.href }
     }, (response) => {

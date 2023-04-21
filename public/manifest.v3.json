@@ -1,0 +1,37 @@
+{
+  "name": "ariadne (Manifest V3)",
+  "short_name": "__MSG_appName__",
+  "description": "__MSG_appDescription__",
+  "homepage_url": "https://ariadne.dantis.me",
+  "version": "0.0.1",
+  "version_name": "0.0.1",
+  "manifest_version": 3,
+  "default_locale": "en",
+  "minimum_chrome_version": "88",
+  "permissions": [
+    "tabs",
+    "management"
+  ],
+  "icons": {
+    "128": "assets/img/Button@8x.png"
+  },
+  "background": {
+    "service_worker": "./background.global.js"
+  },
+  "action": {
+    "default_icon": {
+      "16": "assets/img/Button.png",
+      "24": "assets/img/Button@1.5x.png",
+      "32": "assets/img/Button@2x.png"
+    },
+    "default_title": "__MSG_appName__",
+    "default_popup": "index.html"
+  },
+  "content_scripts": [
+    {
+      "js": ["./content.global.js"],
+      "matches": ["*://*/*"],
+      "run_at": "document_idle"
+    }
+  ]
+}
