@@ -4,7 +4,7 @@ import { defineConfig } from 'vite'
 export default defineConfig({
   build: {
     emptyOutDir: false,
-    outDir: './dist/',
+    outDir: process.env.OUT_DIR || './dist/',
     lib: {
       formats: ['iife'],
       entry: './content/content.js',
