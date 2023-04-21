@@ -1,7 +1,7 @@
 <template>
   <main>
     <!-- Loading overlay -->
-    <LoadingOverlay :visible="isLoading" />
+    <Overlay :visible="isLoading" />
 
     <!-- Favicon and domain name -->
     <div class="mb-4 flex justify-between items-center">
@@ -73,7 +73,7 @@
 import { defineComponent } from 'vue'
 import { useAriadneStore } from '@/stores/ariadne'
 import BigButton from '@/components/BigButton.vue'
-import LoadingOverlay from '@/components/LoadingOverlay.vue'
+import Overlay from '@/components/Overlay.vue'
 import PillCount from '@/components/PillCount.vue'
 import * as browser from 'webextension-polyfill'
 
@@ -81,7 +81,7 @@ export default defineComponent({
   name: 'HomeView',
   components: {
     BigButton,
-    LoadingOverlay,
+    Overlay,
     PillCount
   },
   setup() {

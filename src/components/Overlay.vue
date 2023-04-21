@@ -8,9 +8,11 @@ import { ArrowPathIcon } from '@heroicons/vue/24/solid'
     class="fixed inset-0 bg-black bg-opacity-50 z-10 select-none"
   >
     <div class="absolute inset-0 flex items-center justify-center">
-      <ArrowPathIcon
-        class="h-16 w-16 animate-spin text-white"
-      />
+      <slot>
+        <ArrowPathIcon
+          class="h-16 w-16 animate-spin text-white"
+        />
+      </slot>
     </div>
   </div>
 </template>
@@ -19,7 +21,7 @@ import { ArrowPathIcon } from '@heroicons/vue/24/solid'
 import { defineComponent } from 'vue'
 
 export default defineComponent({
-  name: 'LoadingOverlay',
+  name: 'Overlay',
   props: {
     visible: {
       type: Boolean,
