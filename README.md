@@ -12,17 +12,17 @@ Ariadne is part of an ongoing research project on the automated detection of dec
 
 ## Installation
 
-Download the latest ZIP file from the [Releases page.](https://github.com/wsg-ariadne/ariadne/releases/latest)
+The latest builds of Ariadne are published on the [Releases page.](https://github.com/wsg-ariadne/ariadne/releases/latest)
 
 ### Firefox
 
-- Download the **`_manifest_v2`** ZIP file.
+- Download the **`ariadne-mv2`** ZIP file.
 - Go to `about:debugging#/runtime/this-firefox` in Firefox.
 - Click on `Load Temporary Add-on...` and select the ZIP file.
 
 ### Google Chrome, Chromium
 
-- Download the **`_manifest_v3`** ZIP file.
+- Download the **`ariadne-mv3`** ZIP file.
 - Go to `chrome://extensions` in Chrome.
 - Enable `Developer mode` in the top right corner.
 - Drag and drop the ZIP file into the browser window.
@@ -69,4 +69,7 @@ In production mode, the extension will attempt to contact Dionysus at `https://a
 
 ### Installing
 
-The built extension will be stored in `dist/` for Firefox and `dist-v3/` for Chrome. You can load the extension in your browser by following the instructions in the [Installation](#installation) section, but instead of loading the ZIP file, load the `manifest.json` file in the respective directory.
+The built extension files will be stored in `dist/` for Firefox and `dist-v3/` for Chrome. You can load the extension in your browser by following the instructions in the [Installation](#installation) section, but instead of loading the ZIP file,
+
+- load the `manifest.json` file in `dist/` for Firefox, or
+- click `Load unpacked` and select the `dist-v3/` directory for Chrome.

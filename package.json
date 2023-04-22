@@ -17,10 +17,10 @@
     "build:content": "vite build --config vite.content.config.js",
     "build:main": "vite build",
     "build": "for TARGET in main bg content; do NODE_ENV=production npm run build:$TARGET; done",
-    "package": "npm run build && web-ext build --overwrite-dest --source-dir dist",
+    "package": "npm run build && web-ext build -o -s dist -n ariadne-mv2.zip",
     "dev:v3": "MANIFEST_V3=true npm run dev",
     "build:v3": "MANIFEST_V3=true npm run build",
-    "package:v3": "npm run build:v3 && web-ext build --overwrite-dest --source-dir dist-v3"
+    "package:v3": "npm run build:v3 && web-ext build -o -s dist-v3 -n ariadne-mv3.zip"
   },
   "dependencies": {
     "@heroicons/vue": "^2.0.16",
