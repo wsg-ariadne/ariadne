@@ -1,10 +1,11 @@
 # ariadne
 
-<center>
-<img src="https://raw.githubusercontent.com/wsg-ariadne/ariadne/main/public/assets/logo.svg" width="200" alt="ariadne">&nbsp;&nbsp;&nbsp;
-<a href="https://chrome.google.com/webstore/detail/ariadne/dpnmlgmdfkpbbmjilppkbkhahmlckajg"><img src="https://storage.googleapis.com/web-dev-uploads/image/WlD8wC6g8khYWPJUsQceQkhXSlv1/iNEddTyWiMfLSwFD6qGq.png" width="150" alt="Available in the Chrome Web Store"></a><br><br>
-<img src="https://github.com/wsg-ariadne/ariadne/actions/workflows/build-extension.yml/badge.svg" alt="ariadne">
-</center>
+<p align="center">
+<img src="https://raw.githubusercontent.com/wsg-ariadne/ariadne/main/public/assets/logo.svg" width="200" alt="ariadne"><br><br>
+<a href="https://chrome.google.com/webstore/detail/ariadne/dpnmlgmdfkpbbmjilppkbkhahmlckajg"><img src="https://storage.googleapis.com/web-dev-uploads/image/WlD8wC6g8khYWPJUsQceQkhXSlv1/iNEddTyWiMfLSwFD6qGq.png" width="150" alt="Available in the Chrome Web Store"></a>
+</p>
+
+![build-extension workflow](https://github.com/wsg-ariadne/ariadne/actions/workflows/build-extension.yml/badge.svg)
 
 Ariadne is a browser extension that helps you become aware of [deceptive design](https://deceptive.design) in cookie banners on the Web. It does this through a set of specifically-trained machine learning models that detect deceptive design patterns within the language and the design of cookie banners.
 
