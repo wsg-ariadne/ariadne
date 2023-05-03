@@ -1,9 +1,9 @@
-# ariadne
-
 <p align="center">
 <img src="https://raw.githubusercontent.com/wsg-ariadne/ariadne/main/public/assets/logo.svg" width="200" alt="ariadne"><br><br>
 <a href="https://chrome.google.com/webstore/detail/ariadne/dpnmlgmdfkpbbmjilppkbkhahmlckajg"><img src="https://storage.googleapis.com/web-dev-uploads/image/WlD8wC6g8khYWPJUsQceQkhXSlv1/iNEddTyWiMfLSwFD6qGq.png" width="150" alt="Available in the Chrome Web Store"></a>
 </p>
+
+# ariadne
 
 ![build-extension workflow](https://github.com/wsg-ariadne/ariadne/actions/workflows/build-extension.yml/badge.svg)
 
