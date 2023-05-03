@@ -25,6 +25,10 @@ The latest builds of Ariadne are published on the [Releases page.](https://githu
 
 ### Google Chrome, Chromium
 
+Ariadne can be installed from the Chrome Web Store. Just click the Chrome Web Store badge at the top of this README :-)
+
+Alternatively, you can install it manually:
+
 - Download the **`ariadne-mv3`** ZIP file.
 - Go to `chrome://extensions` in Chrome.
 - Enable `Developer mode` in the top right corner.
