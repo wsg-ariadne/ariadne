@@ -72,7 +72,7 @@ class AriadneBackground {
         fetch(this._API_URL + '/classify/image', {
           method: 'POST',
           body: JSON.stringify({
-            text: imageData
+            image_data: imageData
           }),
           headers: {
             'Content-Type': 'application/json'
