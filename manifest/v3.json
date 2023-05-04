@@ -1,6 +1,6 @@
 {
-  "name": "ariadne (Manifest V3)",
-  "short_name": "__MSG_appName__",
+  "name": "__MSG_appName__",
+  "short_name": "__MSG_appShortName__",
   "description": "__MSG_appDescription__",
   "homepage_url": "https://ariadne.dantis.me",
   "version": "0.0.1",
@@ -29,7 +29,7 @@
   "content_scripts": [
     {
       "js": ["./content.global.js"],
-      "matches": ["*://*/*"],
+      "matches": ["http://*/*", "https://*/*"],
       "run_at": "document_idle"
     }
   ]

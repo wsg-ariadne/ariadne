@@ -11,8 +11,6 @@ class AriadneBackground {
     if (browser.action !== undefined) {
       this.BrowserAction = browser.action;
     }
-
-    this.addListeners();
   }
 
   addListeners() {
@@ -74,7 +72,7 @@ class AriadneBackground {
         fetch(this._API_URL + '/classify/image', {
           method: 'POST',
           body: JSON.stringify({
-            text: imageData
+            image_data: imageData
           }),
           headers: {
             'Content-Type': 'application/json'
@@ -118,11 +116,11 @@ class AriadneBackground {
   toggleBadge(state) {
     if (state) {
       this.BrowserAction.setBadgeBackgroundColor({
-        color: "#00AA00",
+        color: "#B677FA",
       });
     } else {
       this.BrowserAction.setBadgeBackgroundColor({
-        color: "#AAAAAA",
+        color: "#2A272A",
       });
     }
   }
@@ -174,3 +172,4 @@ class AriadneBackground {
 }
 
 const ariadneBackground = new AriadneBackground();
+ariadneBackground.addListeners();

@@ -4,7 +4,7 @@ import { defineConfig } from 'vite'
 export default defineConfig({
   build: {
     emptyOutDir: false,
-    outDir: './dist/',
+    outDir: process.env.MANIFEST_V3 == 'true' ? './dist-v3/' : './dist/',
     lib: {
       formats: ['iife'],
       entry: './background/background.js',

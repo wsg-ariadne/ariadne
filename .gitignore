@@ -107,6 +107,7 @@ dist
 **/.DS_Store
 
 # Build artifacts
+dist-v3/
 web-ext-artifacts/
 
 # Local env variables

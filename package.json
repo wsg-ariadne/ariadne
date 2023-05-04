@@ -13,13 +13,14 @@
     "dev:content": "vite build -m development --config vite.content.config.js",
     "dev:main": "vite build -m development",
     "dev": "for TARGET in main bg content; do npm run dev:$TARGET; done",
-    "dev:v3": "npm run dev && mv dist/manifest.v3.json dist/manifest.json",
     "build:bg": "vite build --config vite.bg.config.js",
     "build:content": "vite build --config vite.content.config.js",
     "build:main": "vite build",
     "build": "for TARGET in main bg content; do NODE_ENV=production npm run build:$TARGET; done",
-    "package": "npm run build && mv dist/manifest.v3.json dist/manifest.json && web-ext build --overwrite-dest --source-dir dist --ignore-files \"**/manifest.v3.json\"",
-    "package:v3": "npm run build && web-ext build --overwrite-dest --source-dir dist"
+    "package": "npm run build && web-ext build -o -s dist -n ariadne-mv2.zip",
+    "dev:v3": "MANIFEST_V3=true npm run dev",
+    "build:v3": "MANIFEST_V3=true npm run build",
+    "package:v3": "npm run build:v3 && web-ext build -o -s dist-v3 -n ariadne-mv3.zip"
   },
   "dependencies": {
     "@heroicons/vue": "^2.0.16",

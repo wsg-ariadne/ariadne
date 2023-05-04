@@ -1,7 +1,7 @@
 <template>
   <main>
     <!-- Overlay for submission loading icon -->
-    <LoadingOverlay :visible="isLoading" />
+    <Overlay :visible="isLoading" />
 
     <!-- Title -->
     <h1 class="text-2xl font-mono font-bold mb-4">Report deceptive design</h1>
@@ -61,14 +61,14 @@ import { defineComponent } from 'vue'
 import { useAriadneStore } from '@/stores/ariadne'
 import BigButton from '@/components/BigButton.vue'
 import Checkbox from '@/components/Checkbox.vue'
-import LoadingOverlay from '@/components/LoadingOverlay.vue'
+import Overlay from '@/components/Overlay.vue'
 
 export default defineComponent({
   name: 'ReportPositiveView',
   components: {
     BigButton,
     Checkbox,
-    LoadingOverlay
+    Overlay
   },
   data() {
     return {

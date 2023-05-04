@@ -1,10 +1,19 @@
 <template>
   <main>
     <!-- Loading overlay -->
-    <LoadingOverlay :visible="isLoading" />
+    <Overlay :visible="isLoading">
+      <div v-if="isDisabled" class="text-center">
+        <NoSymbolIcon class="w-16 h-16 text-white inline-block mb-4" />
+        <p class="text-white">Disabled on internal browser pages</p>
+      </div>
+      <div v-else class="text-center">
+        <ArrowPathIcon class="h-16 w-16 animate-spin text-white inline-block mb-4" />
+        <p class="text-white">Loading stats</p>
+      </div>
+    </Overlay>
 
     <!-- Favicon and domain name -->
-    <div class="mb-4 flex justify-between items-center">
+    <div class="mb-4 flex justify-between items-center" v-show="!isDisabled">
       <img
         class="w-6 h-6 mr-4 shrink-0"
         :src="store.currentFavicon"
@@ -71,17 +80,20 @@
 
 <script>
 import { defineComponent } from 'vue'
+import { ArrowPathIcon, NoSymbolIcon } from '@heroicons/vue/24/outline'
 import { useAriadneStore } from '@/stores/ariadne'
 import BigButton from '@/components/BigButton.vue'
-import LoadingOverlay from '@/components/LoadingOverlay.vue'
+import Overlay from '@/components/Overlay.vue'
 import PillCount from '@/components/PillCount.vue'
 import * as browser from 'webextension-polyfill'
 
 export default defineComponent({
   name: 'HomeView',
   components: {
+    ArrowPathIcon,
     BigButton,
-    LoadingOverlay,
+    NoSymbolIcon,
+    Overlay,
     PillCount
   },
   setup() {
@@ -91,6 +103,7 @@ export default defineComponent({
   },
   data() {
     return {
+      isDisabled: false,
       isLoading: true,
       specificReports: 0,
       generalReports: 0,
@@ -127,6 +140,12 @@ export default defineComponent({
           // Save URL, domain, and path in store
           const url = tabs[0].url
           const urlObject = new URL(url)
+
+          // Disable if we're on an internal browser page, e.g. chrome://*
+          if (urlObject.protocol === 'chrome:') {
+            this.isDisabled = true
+            return
+          }
           this.store.setURL(url)
           this.store.setDomain(urlObject.hostname)
           this.store.setPath(urlObject.pathname)
