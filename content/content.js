@@ -67,13 +67,13 @@ function performDetection() {
                 args: { screenshot }
             })
                 .then((response) => {
-                    console.log("[content] isGood result from Calliope API:", response);
+                    console.log("[content] Result from Janus API:", response);
 
                     // Update badge
                     return browser.runtime.sendMessage({
                         action: "updateBadge",
                         args: {
-                            enabled: !response
+                            enabled: response["classification"] == "weighted"
                         }
                     });
                 });
