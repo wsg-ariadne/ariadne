@@ -116,11 +116,11 @@ class AriadneBackground {
   toggleBadge(state) {
     if (state) {
       this.BrowserAction.setBadgeBackgroundColor({
-        color: "#00AA00",
+        color: "#B677FA",
       });
     } else {
       this.BrowserAction.setBadgeBackgroundColor({
-        color: "#AAAAAA",
+        color: "#2A272A",
       });
     }
   }
