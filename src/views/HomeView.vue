@@ -66,14 +66,9 @@
       <!-- Report positive -->
       <RouterLink to="/report-positive">
         <BigButton arrow class="w-full mb-4">
-          There is deceptive design on this page
+          Report deceptive design on this page
         </BigButton>
       </RouterLink>
-
-      <!-- Report negative -->
-      <BigButton arrow class="w-full">
-        No deceptive design on this page
-      </BigButton>
     </div>
   </main>
 </template>
