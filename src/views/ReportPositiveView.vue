@@ -19,6 +19,7 @@
         v-for="reason in reasons"
         :key="reason.key"
         :checkbox-key="reason.key"
+        :disabled="reason.disabled"
         :value="selectedReasons.includes(reason.key)"
         @update:value="handleReasonChange"
         class="mb-4"
@@ -89,22 +90,27 @@ export default defineComponent({
         {
           key: 'unclear_language',
           text: 'Unclear language',
-          description: 'The cookie banner does not explicitly or clearly ask for my consent to use cookies'
+          description: 'The cookie banner does not explicitly or clearly ask for my consent to use cookies',
+          disabled: false
         },
         {
           key: 'prefilled_options',
           text: 'Pre-filled options',
-          description: 'The cookie banner has options that were filled out for me, e.g., pre-checked checkboxes for different types of cookies'
+          // description: 'The cookie banner has options that were filled out for me, e.g., pre-checked checkboxes for different types of cookies',
+          description: 'Not currently supported',
+          disabled: true
         },
         {
           key: 'weighted_options',
           text: 'Weighted options',
-          description: 'The controls on the cookie banner are weighted, i.e., designed to bring more visual emphasis on one option over another'
+          description: 'The controls on the cookie banner are weighted, i.e., designed to bring more visual emphasis on one option over another',
+          disabled: false
         },
         {
           key: 'other',
           text: 'Others',
-          description: 'I noticed another type of deceptive design on the cookie banner that wasn\'t included above'
+          description: 'I noticed another type of deceptive design on the cookie banner that wasn\'t included above',
+          disabled: false
         }
       ]
     }

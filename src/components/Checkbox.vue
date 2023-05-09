@@ -7,10 +7,12 @@ import { MinusIcon, PlusIcon } from '@heroicons/vue/24/outline'
     @click="handleChange"
     class="group rounded-lg box-border border-2 
       px-4 py-3 flex flex-row justify-between items-start
-      transition-colors cursor-pointer select-none"
+      transition-colors select-none"
     :class="{
       'bg-adn-dark border-adn-dark': isChecked,
-      'bg-white border-adn-border': !isChecked
+      'bg-white border-adn-border': !isChecked,
+      'cursor-not-allowed opacity-30': disabled,
+      'cursor-pointer': !disabled
     }"
   >
     <div :class="isChecked ? 'text-white' : 'text-adn-dark'">
@@ -42,11 +44,16 @@ export default defineComponent({
     checkboxKey: {
       type: String,
       required: true
+    },
+    disabled: {
+      type: Boolean,
+      default: false
     }
   },
   emits: ['update:value'],
   methods: {
     handleChange(e) {
+      if (this.disabled) { return }
       this.isChecked = !this.isChecked
       this.$emit('update:value', {
         key: this.checkboxKey,
