@@ -150,13 +150,14 @@ export default defineComponent({
             action: 'requestStats',
             args: { url }
           })
-            .then((response) => {
-              this.generalReports = response.general_reports.count
-              this.specificReports = response.specific_reports.count
-              this.types.unclearLanguage.count = response.specific_reports.by_type.unclear_language
-              this.types.prefilledOptions.count = response.specific_reports.by_type.prefilled_options
-              this.types.weightedOptions.count = response.specific_reports.by_type.weighted_options
-              this.types.other.count = response.specific_reports.by_type.other
+            .then((response) => response.stats)
+            .then((stats) => {
+              this.generalReports = stats.general_reports.count
+              this.specificReports = stats.specific_reports.count
+              this.types.unclearLanguage.count = stats.specific_reports.by_type.unclear_language
+              this.types.prefilledOptions.count = stats.specific_reports.by_type.prefilled_options
+              this.types.weightedOptions.count = stats.specific_reports.by_type.weighted_options
+              this.types.other.count = stats.specific_reports.by_type.other
               this.isLoading = false
             })
         })
