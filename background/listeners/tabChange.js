@@ -16,7 +16,12 @@ export default (activeInfo) => {
     })
     .then(async (url) => {
       console.log('listeners/tabChange: Stats refreshed');
-      const { enabled } = await getTransaction('badgeStates', activeInfo.tabId);
+      let enabled = false;
+      try {
+        enabled = (await getTransaction('badgeStates', activeInfo.tabId)).enabled;
+      } catch (_) {
+        // do nothing
+      }
       const { stats } = await getTransaction('stats', url);
       toggleBadge(enabled);
       updateBadgeText(stats);
