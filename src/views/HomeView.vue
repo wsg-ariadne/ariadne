@@ -24,6 +24,32 @@
       </h1>
     </div>
 
+    <!-- Detection result -->
+    <div class="mb-4 mx-[-2rem] px-8 py-4 text-adn-light"
+      :class="{
+        'bg-adn-purple-dark': tripped,
+        'bg-adn-dark': !tripped
+      }">
+      <div class="flex justify-between items-start mb-4">
+        <!-- Yes/no result -->
+        <h2 class="text-lg font-bold font-mono">{{ tripped ? 'D' : 'No d' }}eceptive design<br>detected here</h2>
+
+        <!-- Rating buttons -->
+        <div>
+          <HandThumbUpIcon class="w-6 h-6 mb-2"></HandThumbUpIcon>
+          <HandThumbDownIcon class="w-6 h-6"></HandThumbDownIcon>
+        </div>
+      </div>
+      <p v-if="tripped" class="text-sm">
+        Ariadne's automated detector determined that the cookie banner on this page might
+        be making use of <span class="font-bold">{{ trippedText }}.</span>
+      </p>
+      <p v-else class="text-sm">
+        Ariadne's automated detector determined that cookie banners on this page,
+        if any, are not making use of deceptive design.
+      </p>
+    </div>
+
     <!-- Statistics -->
     <div class="mb-8">
       <!-- Report count -->
@@ -70,12 +96,20 @@
         </BigButton>
       </RouterLink>
     </div>
+
+    <p class="mt-4 text-xs">
+      By clicking the thumbs buttons or the report button above, you allow Ariadne to submit a report
+      to the remote Ariadne server containing information about this page.
+      <a href="https://ariadne.dantis.me/privacy" class="underline" target="_blank">
+        Click here to view our privacy policy.
+      </a>
+    </p>
   </main>
 </template>
 
 <script>
 import { defineComponent } from 'vue'
-import { ArrowPathIcon, NoSymbolIcon } from '@heroicons/vue/24/outline'
+import { ArrowPathIcon, NoSymbolIcon, HandThumbDownIcon, HandThumbUpIcon } from '@heroicons/vue/24/outline'
 import { useAriadneStore } from '@/stores/ariadne'
 import BigButton from '@/components/BigButton.vue'
 import Overlay from '@/components/Overlay.vue'
@@ -87,6 +121,8 @@ export default defineComponent({
   components: {
     ArrowPathIcon,
     BigButton,
+    HandThumbDownIcon,
+    HandThumbUpIcon,
     NoSymbolIcon,
     Overlay,
     PillCount
@@ -119,7 +155,23 @@ export default defineComponent({
           name: 'Others',
           count: 0
         }
+      },
+      calliopeTripped: false,
+      janusTripped: false
+    }
+  },
+  computed: {
+    tripped() {
+      return this.calliopeTripped || this.janusTripped
+    },
+    trippedText() {
+      if (this.calliopeTripped) {
+        if (this.janusTripped) {
+          return 'unclear language and weighted options'
+        }
+        return 'unclear language'
       }
+      if (this.janusTripped) { return 'weighted options' }
     }
   },
   mounted() {
@@ -150,7 +202,11 @@ export default defineComponent({
             action: 'requestStats',
             args: { url }
           })
-            .then((response) => response.stats)
+            .then((response) => {
+              this.calliopeTripped = response.calliopeResult
+              this.janusTripped = response.janusResult
+              return response.stats
+            })
             .then((stats) => {
               this.generalReports = stats.general_reports.count
               this.specificReports = stats.specific_reports.count
