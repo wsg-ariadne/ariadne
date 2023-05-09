@@ -7,20 +7,23 @@ const openDatabase = () => new Promise((res, rej) => {
   
   // Declare schema
   request.onupgradeneeded = (event) => {
-    db = event.target.result;
+    const db = event.target.result;
   
     // Create storage for stats per URL
     const urlStatsStore = db.createObjectStore('stats', { keyPath: 'url' })
     urlStatsStore.createIndex('url', 'url', { unique: true })
-    urlStatsStore.transaction.oncomplete = (_) => {
-      console.log('browser/storage(stats): Transaction complete');
-    }
   
     // Create storage for badge states per tab
     const badgeStateStore = db.createObjectStore('badgeStates', { keyPath: 'tabId' })
     badgeStateStore.createIndex('tabId', 'tabId', { unique: true })
-    badgeStateStore.transaction.oncomplete = (_) => {
-    }
+  
+    // Create storage for Calliope results per URL
+    const calliopeStore = db.createObjectStore('calliope', { keyPath: 'url' })
+    calliopeStore.createIndex('url', 'url', { unique: true })
+  
+    // Create storage for Janus results per URL
+    const janusStore = db.createObjectStore('janus', { keyPath: 'url' })
+    janusStore.createIndex('url', 'url', { unique: true })
   }
 
   request.onsuccess = (event) => {
