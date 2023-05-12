@@ -7,7 +7,7 @@ export const useAriadneStore = defineStore('ariadne', {
     currentPath: '',
     currentURL: '',
     isRunningInExtension: false,
-    calliopeResult: '',
+    calliopeTripped: '',
     calliopeText: '',
     janusResult: '',
     janusScreenshot: ''

@@ -62,7 +62,7 @@ export default (request, sender, sendResponse) => {
       // Try fetching results from DB
       try {
         const cachedCalliope = await getTransaction('calliope', tabUrl);
-        calliopeResult = cachedCalliope.tripped;
+        calliopeResult = JSON.stringify(cachedCalliope.tripped);
         cookieBannerText = cachedCalliope.cookieBannerText;
       } catch (_) {
         // do nothing

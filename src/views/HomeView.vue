@@ -195,7 +195,7 @@ export default defineComponent({
   },
   computed: {
     calliopeTripped() {
-      return this.store.calliopeResult === true
+      return this.store.calliopeTripped === 'true'
     },
     janusTripped() {
       return this.store.janusResult === 'weighted'
@@ -243,7 +243,7 @@ export default defineComponent({
           })
             .then((response) => {
               this.store.setDetectionData({
-                calliopeResult: response.calliopeResult,
+                calliopeTripped: response.calliopeResult,
                 calliopeText: response.cookieBannerText,
                 janusResult: response.janusResult,
                 janusScreenshot: response.imageData
