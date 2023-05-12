@@ -54,7 +54,7 @@ export default (request, sender, sendResponse) => {
 
     (async () => {
       const tabUrl = request.args.url;
-      let calliopeResult = false;
+      let calliopeResult = '';
       let janusResult = '';
       let cookieBannerText = '';
       let imageData = '';

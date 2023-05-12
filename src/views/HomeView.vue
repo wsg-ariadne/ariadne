@@ -194,14 +194,17 @@ export default defineComponent({
     }
   },
   computed: {
+    calliopeTripped() {
+      return this.store.calliopeResult === true
+    },
     janusTripped() {
       return this.store.janusResult === 'weighted'
     },
     tripped() {
-      return this.store.calliopeTripped || this.janusTripped
+      return this.calliopeTripped || this.janusTripped
     },
     trippedText() {
-      if (this.store.calliopeTripped) {
+      if (this.calliopeTripped) {
         if (this.janusTripped) {
           return 'unclear language and weighted options'
         }
@@ -240,7 +243,7 @@ export default defineComponent({
           })
             .then((response) => {
               this.store.setDetectionData({
-                calliopeTripped: response.calliopeResult,
+                calliopeResult: response.calliopeResult,
                 calliopeText: response.cookieBannerText,
                 janusResult: response.janusResult,
                 janusScreenshot: response.imageData
