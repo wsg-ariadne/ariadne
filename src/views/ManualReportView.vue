@@ -65,7 +65,7 @@ import Checkbox from '@/components/Checkbox.vue'
 import Overlay from '@/components/Overlay.vue'
 
 export default defineComponent({
-  name: 'ReportPositiveView',
+  name: 'ManualReportView',
   components: {
     BigButton,
     Checkbox,

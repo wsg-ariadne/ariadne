@@ -90,7 +90,7 @@
     <!-- Report buttons -->
     <div>
       <!-- Report positive -->
-      <RouterLink to="/report-positive">
+      <RouterLink to="/report-manual">
         <BigButton arrow class="w-full mb-4">
           Report deceptive design on this page
         </BigButton>
