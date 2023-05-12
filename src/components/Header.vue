@@ -31,7 +31,7 @@ import { Cog6ToothIcon } from '@heroicons/vue/24/outline'
     <!-- Controls -->
     <div class="flex flex-row items-center justify-between">
       <!-- Settings shortcut -->
-      <div
+      <!-- <div
         v-show="$route.path === '/'"
         @click="$router.push('/settings')"
         class="p-2 m-[-0.5rem] mr-1 rounded-lg 
@@ -40,7 +40,7 @@ import { Cog6ToothIcon } from '@heroicons/vue/24/outline'
         <Cog6ToothIcon
           class="h-6 w-6 flex-none text-adn-dark"
         />
-      </div>
+      </div> -->
 
       <!-- Beta indicator -->
       <PillCount compact>ALPHA</PillCount>
