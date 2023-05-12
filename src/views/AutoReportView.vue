@@ -13,8 +13,12 @@
     <p class="font-mono text-base w-full truncate">{{ store.currentPath }}</p>
 
     <!-- Report details -->
-    <h4 class="mt-4 font-bold text-sm">Reporting as</h4>
-    <p class="font-mono text-base w-full truncate mb-2">{{ reportType }}</p>
+    <h4 class="mt-4 font-bold text-sm">Calliope result</h4>
+    <p class="font-mono text-base w-full truncate mb-2">Likely {{ calliopeResult }}</p>
+    <h4 class="mt-2 font-bold text-sm">Janus result</h4>
+    <p class="font-mono text-base w-full truncate mb-2">Likely {{ store.janusResult || 'no banner present' }}</p>
+    <h4 class="mt-2 font-bold text-sm">Reporting as</h4>
+    <p class="font-mono text-base w-full truncate mb-4">{{ reportType }} detection</p>
     <textarea
       class="w-full h-24 p-2 box-border rounded-lg bg-white"
       placeholder="Tell us more..."
@@ -22,44 +26,48 @@
     ></textarea>
 
     <!-- Report attachments -->
-    <h4 class="mt-4 font-bold text-sm">Attachments</h4>
-    <p>
-      You can choose to include the items below in your report by clicking them.
-      This will help us improve Ariadne in the future.
-    </p>
-    <Checkbox
-      checkbox-key="attachment-text"
-      :value="attachText"
-      class="my-2"
-      @update:value="handleCheckboxChange"
-      :disabled="this.store.calliopeText === ''"
-    >
-      <template #default>Cookie banner text</template>
-      <template #description>{{ truncatedText }}</template>
-    </Checkbox>
-    <Checkbox
-      checkbox-key="attachment-image"
-      :value="attachImage"
-      class="mb-4"
-      @update:value="handleCheckboxChange"
-      :disabled="this.store.janusScreenshot === ''"
-    >
-      <template #default>Screenshot</template>
-      <template #description>
-        <img
-          class="w-full h-auto"
-          :src="store.janusScreenshot"
-          alt="Screenshot"
-        />
-      </template>
-    </Checkbox>
+    <div class="mt-4" v-show="attachmentsPresent">
+      <h4 class="font-bold text-sm">Attachments</h4>
+      <p>
+        You can choose to include the items below in your report by clicking them.
+        This will help us improve Ariadne in the future.
+      </p>
+      <Checkbox
+        checkbox-key="attachment-text"
+        :value="attachText"
+        class="my-2"
+        @update:value="handleCheckboxChange"
+        :disabled="this.store.calliopeText === ''"
+      >
+        <template #default>Cookie banner text</template>
+        <template #description>{{ truncatedText }}</template>
+      </Checkbox>
+      <Checkbox
+        checkbox-key="attachment-image"
+        :value="attachImage"
+        class="mb-4"
+        @update:value="handleCheckboxChange"
+        :disabled="this.store.janusScreenshot === ''"
+      >
+        <template #default>Screenshot</template>
+        <template #description>
+          <img
+            v-show="store.janusScreenshot !== ''"
+            class="w-full h-auto"
+            :src="store.janusScreenshot"
+            alt="Screenshot"
+          />
+        </template>
+      </Checkbox>
+
+      <p class="mt-4 text-xs">
+        As the extracted cookie banner text and screenshot may contain personal
+        information, Ariadne will only submit them if you explicitly allow it to do so.
+      </p>
+    </div>
 
     <!-- Privacy statement -->
-    <p class="mt-4 text-xs">
-      As the extracted cookie banner text and screenshot may contain personal
-      information, Ariadne will only submit them if you explicitly allow it to do so.
-    </p>
-    <p class="mt-1 text-xs">
+    <p class="mt-2 text-xs">
       By clicking Submit, you allow Ariadne to submit a report to the Dionysus server
       at {{ dionysusUrl }} containing information about this page,
       along with any attachments and remarks you have provided.
@@ -119,6 +127,17 @@ export default defineComponent({
     }
   },
   computed: {
+    attachmentsPresent() {
+      return this.store.calliopeText !== '' || this.store.janusScreenshot !== ''
+    },
+    calliopeResult() {
+      console.log(this.store.calliopeTripped)
+      if (this.store.calliopeTripped !== '') {
+        return this.store.calliopeTripped === 'true' ? 'unclear language' : 'clear language'
+      } else {
+        return 'no banner present'
+      }
+    },
     reportType() {
       return this.vote ? 'Correct' : 'Incorrect'
     },
