@@ -39,8 +39,8 @@
         @update:value="handleCheckboxChange"
         :disabled="this.store.calliopeText === ''"
       >
-        <template #default>Cookie banner text</template>
-        <template #description>{{ truncatedText }}</template>
+        <template #default>Text content</template>
+        <template #description>{{ store.calliopeText }}</template>
       </Checkbox>
       <Checkbox
         checkbox-key="attachment-image"
@@ -140,11 +140,6 @@ export default defineComponent({
     },
     reportType() {
       return this.vote ? 'Correct' : 'Incorrect'
-    },
-    truncatedText() {
-      return this.store.calliopeText.length > 100
-        ? this.store.calliopeText.substring(0, 100) + '...'
-        : this.store.calliopeText
     }
   },
   methods: {
