@@ -132,19 +132,11 @@
     <div>
       <!-- Report positive -->
       <RouterLink to="/report-manual">
-        <BigButton arrow class="w-full mb-4">
+        <BigButton arrow class="w-full">
           Report deceptive design on this page
         </BigButton>
       </RouterLink>
     </div>
-
-    <p class="mt-4 text-xs">
-      By clicking the thumbs buttons or the report button above, you allow Ariadne to submit a report
-      to the remote Ariadne server containing information about this page.
-      <a href="https://ariadne.dantis.me/privacy" class="underline" target="_blank">
-        Click here to view our privacy policy.
-      </a>
-    </p>
   </main>
 </template>
 

@@ -54,6 +54,20 @@
       </template>
     </Checkbox>
 
+    <!-- Privacy statement -->
+    <p class="mt-4 text-xs">
+      As the extracted cookie banner text and screenshot may contain personal
+      information, Ariadne will only submit them if you explicitly allow it to do so.
+    </p>
+    <p class="mt-1 text-xs">
+      By clicking Submit, you allow Ariadne to submit a report to the Dionysus server
+      at {{ dionysusUrl }} containing information about this page,
+      along with any attachments and remarks you have provided.
+      <a href="https://ariadne.dantis.me/privacy" class="underline" target="_blank">
+        Click here to view our privacy policy.
+      </a>
+    </p>
+
     <!-- Form controls -->
     <div class="mt-8 grid gap-4 grid-rows-1 grid-cols-2">
       <!-- Submission button -->
@@ -97,6 +111,7 @@ export default defineComponent({
   },
   data() {
     return {
+      dionysusUrl: import.meta.env.VITE_API_URL,
       isLoading: false,
       remarks: '',
       attachText: false,

@@ -38,6 +38,16 @@
         ></textarea>
       </div>
 
+      <!-- Privacy statement -->
+      <p class="mt-2 text-xs">
+        By clicking Submit, you allow Ariadne to submit a report to the Dionysus server
+        at {{ dionysusUrl }} containing information about this page,
+        along with any remarks you have provided.
+        <a href="https://ariadne.dantis.me/privacy" class="underline" target="_blank">
+          Click here to view our privacy policy.
+        </a>
+      </p>
+
       <!-- Form controls -->
       <div class="mt-8 grid gap-4 grid-rows-1 grid-cols-2">
         <!-- Submission button -->
@@ -74,6 +84,7 @@ export default defineComponent({
   },
   data() {
     return {
+      dionysusUrl: import.meta.env.VITE_API_URL,
       selectedReasons: [],
       customReason: '',
       isLoading: false
