@@ -1,6 +1,28 @@
 import html2canvas from 'html2canvas';
 import * as browser from 'webextension-polyfill';
 
+function canvasHandler(canvas) {
+    const screenshot = canvas.toDataURL("image/png");
+    console.log("[content] Screenshot taken, sending to service worker");
+
+    // Send screenshot to service worker for detection
+    browser.runtime.sendMessage({
+        action: "visualDetection",
+        args: { screenshot }
+    })
+        .then((response) => {
+            console.log("[content] Result from Janus API:", response);
+
+            // Update badge
+            return browser.runtime.sendMessage({
+                action: "updateBadge",
+                args: {
+                    enabled: response["classification"] == "weighted"
+                }
+            });
+        });
+}
+
 let bannerDiv = null;
 function performDetection() {
     // Look for floating divs, i.e. divs with position: fixed|absolute|sticky
@@ -43,13 +65,14 @@ function performDetection() {
                 .then((response) => {
                     console.log("[content] Badge updated:", response);
                 });
+                
             break;
         }
     }
 
-    // No banner found
+    // Perform visual detection
     if (bannerDiv === null) {
-        console.log("[content] No banner found");
+        console.log("[content] No banner found, taking screenshot of viewport");
 
         // Take screenshot of viewport
         html2canvas(document.body, {
@@ -57,28 +80,13 @@ function performDetection() {
             y: window.scrollY,
             width: window.innerWidth,
             height: window.innerHeight,
-        }).then((canvas) => {
-            const screenshot = canvas.toDataURL("image/png");
-            console.log("[content] Screenshot taken, sending to service worker");
-
-            // Send screenshot to service worker for detection
-            browser.runtime.sendMessage({
-                action: "visualDetection",
-                args: { screenshot }
-            })
-                .then((response) => {
-                    console.log("[content] Result from Janus API:", response);
-
-                    // Update badge
-                    return browser.runtime.sendMessage({
-                        action: "updateBadge",
-                        args: {
-                            enabled: response["classification"] == "weighted"
-                        }
-                    });
-                });
-        });
+        }).then(canvasHandler);
         return;
+    } else {
+        console.log("[content] Taking screenshot of banner");
+
+        // Take screenshot of banner
+        html2canvas(bannerDiv).then(canvasHandler);
     }
 }
 
