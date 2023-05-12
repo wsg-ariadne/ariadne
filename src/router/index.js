@@ -28,7 +28,11 @@ const router = createRouter({
       meta: { title: 'Submit Detection Feedback' },
       component: () => import('../views/AutoReportView.vue')
     }
-  ]
+  ],
+  scrollBehavior(to, from, savedPosition) {
+    // always scroll to top
+    return { top: 0 }
+  },
 })
 
 export default router
