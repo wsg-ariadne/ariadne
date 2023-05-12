@@ -83,12 +83,11 @@
         </div>
       </div>
       <p v-if="tripped" class="text-sm">
-        Ariadne's automated detector determined that the cookie banner on this page might
-        be making use of <span class="font-bold">{{ trippedText }}.</span>
+        The cookie banner on this page might be making use of
+        <span class="font-bold">{{ trippedText }}.</span>
       </p>
       <p v-else class="text-sm">
-        Ariadne's automated detector determined that cookie banners on this page,
-        if any, are not making use of deceptive design.
+        The cookie banner on this page, if any, is not making use of deceptive design.
       </p>
     </div>
 
