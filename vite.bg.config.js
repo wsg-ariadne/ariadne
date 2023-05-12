@@ -11,6 +11,9 @@ export default defineConfig({
       name: 'Ariadne'
     },
     rollupOptions: {
+      input: {
+        background: new URL('./background/background.html', import.meta.url).pathname,
+      },
       output: {
         entryFileNames: 'background.js',
         extend: true,

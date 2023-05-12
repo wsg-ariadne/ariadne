@@ -36,8 +36,7 @@ export default defineConfig({
     outDir,
     rollupOptions: {
       input: {
-        index: new URL('./index.html', import.meta.url).pathname,
-        background: new URL('./background/background.html', import.meta.url).pathname,
+        index: new URL('./index.html', import.meta.url).pathname
       },
       output: {
         entryFileNames: '[name].global.js',
