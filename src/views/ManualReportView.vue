@@ -44,7 +44,8 @@
         <BigButton
           centered-text
           :disabled="incompleteReport"
-          @click="submitReport">
+          @click="submitReport"
+        >
           Submit
         </BigButton>
 
@@ -137,12 +138,6 @@ export default defineComponent({
     submitReport(e) {
       e.preventDefault()
       if (this.incompleteReport) return
-      console.log('Submitting report', {
-        selectedReasons: this.selectedReasons,
-        customReason: this.customReason,
-        url: this.store.url,
-        isRunningInExtension: this.store.isRunningInExtension
-      })
 
       // Send report to backend via POST
       this.isLoading = true
