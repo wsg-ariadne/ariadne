@@ -36,8 +36,50 @@
 
         <!-- Rating buttons -->
         <div>
-          <HandThumbUpIcon class="w-6 h-6 mb-2"></HandThumbUpIcon>
-          <HandThumbDownIcon class="w-6 h-6"></HandThumbDownIcon>
+          <Tooltip
+            tooltip-id="upvote-tooltip"
+            placement="left"
+          >
+            <template #parent>
+              <RouterLink
+                :to="{
+                  name: 'report-auto',
+                  query: {
+                    vote: 'true'
+                  }
+                }"
+              >
+                <div class="cursor-pointer mb-2">
+                  <HandThumbUpIcon class="w-6 h-6"></HandThumbUpIcon>
+                </div>
+              </RouterLink>
+            </template>
+            <template #tooltip>
+              Report correct detection
+            </template>
+          </Tooltip>
+          <Tooltip
+            tooltip-id="downvote-tooltip"
+            placement="left"
+          >
+            <template #parent>
+              <RouterLink
+                :to="{
+                  name: 'report-auto',
+                  query: {
+                    vote: 'false'
+                  }
+                }"
+              >
+                <div class="cursor-pointer">
+                  <HandThumbDownIcon class="w-6 h-6"></HandThumbDownIcon>
+                </div>
+              </RouterLink>
+            </template>
+            <template #tooltip>
+              Report incorrect detection
+            </template>
+          </Tooltip>
         </div>
       </div>
       <p v-if="tripped" class="text-sm">
@@ -114,6 +156,7 @@ import { useAriadneStore } from '@/stores/ariadne'
 import BigButton from '@/components/BigButton.vue'
 import Overlay from '@/components/Overlay.vue'
 import PillCount from '@/components/PillCount.vue'
+import Tooltip from '@/components/Tooltip.vue'
 import * as browser from 'webextension-polyfill'
 
 export default defineComponent({
@@ -125,7 +168,8 @@ export default defineComponent({
     HandThumbUpIcon,
     NoSymbolIcon,
     Overlay,
-    PillCount
+    PillCount,
+    Tooltip
   },
   setup() {
     return {
