@@ -10,10 +10,9 @@ const copyManifest = () => {
   return {
     name: 'copy-manifest',
     buildStart() {
-      if (fs.existsSync(outDir)) {
-        fs.rmSync(outDir, { recursive: true, force: true });
+      if (!fs.existsSync(outDir)) {
+        fs.mkdirSync(outDir);
       }
-      fs.mkdirSync(outDir);
 
       const sourceFilename = process.env.MANIFEST_V3 == 'true' ? 'v3.json' : 'v2.json'
       const destPath = resolve(outDir, 'manifest.json')
@@ -36,8 +35,7 @@ export default defineConfig({
     outDir,
     rollupOptions: {
       input: {
-        index: new URL('./index.html', import.meta.url).pathname,
-        background: new URL('./background/background.html', import.meta.url).pathname,
+        index: new URL('./index.html', import.meta.url).pathname
       },
       output: {
         entryFileNames: '[name].global.js',

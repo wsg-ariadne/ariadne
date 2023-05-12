@@ -3,6 +3,7 @@ module.exports = {
   content: [
     "./index.html",
     "./src/**/*.{vue,js,ts,jsx,tsx}",
+    "./node_modules/flowbite.{js,ts}",
   ],
   theme: {
     extend: {
@@ -10,6 +11,7 @@ module.exports = {
         'adn-light': '#F7F0F0',
         'adn-dark': '#2A272A',
         'adn-purple': '#B677FA',
+        'adn-purple-dark': '#884ACC',
         'adn-turquoise': '#66CED6',
         'adn-teal': '#048BA8',
         'adn-border': '#C1B4C1',
@@ -35,5 +37,7 @@ module.exports = {
       }
     },
   },
-  plugins: [],
+  plugins: [
+    require('flowbite/plugin'),
+  ],
 }

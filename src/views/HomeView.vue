@@ -24,6 +24,73 @@
       </h1>
     </div>
 
+    <!-- Detection result -->
+    <div class="mb-4 mx-[-2rem] px-8 py-4 text-adn-light"
+      :class="{
+        'bg-adn-purple-dark': tripped,
+        'bg-adn-dark': !tripped
+      }">
+      <div class="flex justify-between items-start mb-4">
+        <!-- Yes/no result -->
+        <h2 class="text-lg font-bold font-mono">{{ tripped ? 'D' : 'No d' }}eceptive design<br>detected here</h2>
+
+        <!-- Rating buttons -->
+        <div>
+          <Tooltip
+            tooltip-id="upvote-tooltip"
+            placement="left"
+          >
+            <template #parent>
+              <RouterLink
+                :to="{
+                  name: 'report-auto',
+                  query: {
+                    vote: 'true'
+                  }
+                }"
+              >
+                <div class="cursor-pointer mb-2">
+                  <HandThumbUpIcon class="w-6 h-6"></HandThumbUpIcon>
+                </div>
+              </RouterLink>
+            </template>
+            <template #tooltip>
+              Report correct detection
+            </template>
+          </Tooltip>
+          <Tooltip
+            tooltip-id="downvote-tooltip"
+            placement="left"
+          >
+            <template #parent>
+              <RouterLink
+                :to="{
+                  name: 'report-auto',
+                  query: {
+                    vote: 'false'
+                  }
+                }"
+              >
+                <div class="cursor-pointer">
+                  <HandThumbDownIcon class="w-6 h-6"></HandThumbDownIcon>
+                </div>
+              </RouterLink>
+            </template>
+            <template #tooltip>
+              Report incorrect detection
+            </template>
+          </Tooltip>
+        </div>
+      </div>
+      <p v-if="tripped" class="text-sm">
+        The cookie banner on this page might be making use of
+        <span class="font-bold">{{ trippedText }}.</span>
+      </p>
+      <p v-else class="text-sm">
+        The cookie banner on this page, if any, is not making use of deceptive design.
+      </p>
+    </div>
+
     <!-- Statistics -->
     <div class="mb-8">
       <!-- Report count -->
@@ -64,27 +131,23 @@
     <!-- Report buttons -->
     <div>
       <!-- Report positive -->
-      <RouterLink to="/report-positive">
-        <BigButton arrow class="w-full mb-4">
-          There is deceptive design on this page
+      <RouterLink to="/report-manual">
+        <BigButton arrow class="w-full">
+          Report deceptive design on this page
         </BigButton>
       </RouterLink>
-
-      <!-- Report negative -->
-      <BigButton arrow class="w-full">
-        No deceptive design on this page
-      </BigButton>
     </div>
   </main>
 </template>
 
 <script>
 import { defineComponent } from 'vue'
-import { ArrowPathIcon, NoSymbolIcon } from '@heroicons/vue/24/outline'
+import { ArrowPathIcon, NoSymbolIcon, HandThumbDownIcon, HandThumbUpIcon } from '@heroicons/vue/24/outline'
 import { useAriadneStore } from '@/stores/ariadne'
 import BigButton from '@/components/BigButton.vue'
 import Overlay from '@/components/Overlay.vue'
 import PillCount from '@/components/PillCount.vue'
+import Tooltip from '@/components/Tooltip.vue'
 import * as browser from 'webextension-polyfill'
 
 export default defineComponent({
@@ -92,9 +155,12 @@ export default defineComponent({
   components: {
     ArrowPathIcon,
     BigButton,
+    HandThumbDownIcon,
+    HandThumbUpIcon,
     NoSymbolIcon,
     Overlay,
-    PillCount
+    PillCount,
+    Tooltip
   },
   setup() {
     return {
@@ -124,7 +190,27 @@ export default defineComponent({
           name: 'Others',
           count: 0
         }
+      },
+    }
+  },
+  computed: {
+    calliopeTripped() {
+      return this.store.calliopeTripped === 'true'
+    },
+    janusTripped() {
+      return this.store.janusResult === 'weighted'
+    },
+    tripped() {
+      return this.calliopeTripped || this.janusTripped
+    },
+    trippedText() {
+      if (this.calliopeTripped) {
+        if (this.janusTripped) {
+          return 'unclear language and weighted options'
+        }
+        return 'unclear language'
       }
+      if (this.janusTripped) { return 'weighted options' }
     }
   },
   mounted() {
@@ -156,12 +242,21 @@ export default defineComponent({
             args: { url }
           })
             .then((response) => {
-              this.generalReports = response.general_reports.count
-              this.specificReports = response.specific_reports.count
-              this.types.unclearLanguage.count = response.specific_reports.by_type.unclear_language
-              this.types.prefilledOptions.count = response.specific_reports.by_type.prefilled_options
-              this.types.weightedOptions.count = response.specific_reports.by_type.weighted_options
-              this.types.other.count = response.specific_reports.by_type.other
+              this.store.setDetectionData({
+                calliopeTripped: response.calliopeResult,
+                calliopeText: response.cookieBannerText,
+                janusResult: response.janusResult,
+                janusScreenshot: response.imageData
+              })
+              return response.stats
+            })
+            .then((stats) => {
+              this.generalReports = stats.general_reports.count
+              this.specificReports = stats.specific_reports.count
+              this.types.unclearLanguage.count = stats.specific_reports.by_type.unclear_language
+              this.types.prefilledOptions.count = stats.specific_reports.by_type.prefilled_options
+              this.types.weightedOptions.count = stats.specific_reports.by_type.weighted_options
+              this.types.other.count = stats.specific_reports.by_type.other
               this.isLoading = false
             })
         })

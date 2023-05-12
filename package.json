@@ -1,7 +1,7 @@
 {
   "name": "ariadne",
   "description": "Detect deceptive design on the Web",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "homepage": "https://ariadne.dantis.me",
   "author": "Juris Hannah Adorna & Aurel Jared Dantis",
   "repository": {
@@ -24,6 +24,7 @@
   },
   "dependencies": {
     "@heroicons/vue": "^2.0.16",
+    "flowbite": "^1.6.5",
     "html2canvas": "^1.4.1",
     "pinia": "^2.0.32",
     "vue": "^3.2.47",

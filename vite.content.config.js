@@ -12,7 +12,7 @@ export default defineConfig({
     },
     rollupOptions: {
       output: {
-        entryFileNames: 'content.global.js',
+        entryFileNames: 'content.js',
         extend: true,
       }
     }

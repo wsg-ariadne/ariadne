@@ -6,7 +6,11 @@ export const useAriadneStore = defineStore('ariadne', {
     currentFavicon: '',
     currentPath: '',
     currentURL: '',
-    isRunningInExtension: false
+    isRunningInExtension: false,
+    calliopeTripped: '',
+    calliopeText: '',
+    janusResult: '',
+    janusScreenshot: ''
   }),
   actions: {
     setDomain(domain) {
@@ -23,6 +27,12 @@ export const useAriadneStore = defineStore('ariadne', {
     },
     setRunningInExtension(isRunningInExtension) {
       this.isRunningInExtension = isRunningInExtension;
+    },
+    setDetectionData({ calliopeTripped, calliopeText, janusResult, janusScreenshot }) {
+      this.calliopeTripped = calliopeTripped;
+      this.calliopeText = calliopeText;
+      this.janusResult = janusResult;
+      this.janusScreenshot = janusScreenshot;
     }
   }
 })

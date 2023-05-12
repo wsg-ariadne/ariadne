@@ -3,8 +3,8 @@
   "short_name": "__MSG_appShortName__",
   "description": "__MSG_appDescription__",
   "homepage_url": "https://ariadne.dantis.me",
-  "version": "0.1.0",
-  "version_name": "0.1.0",
+  "version": "0.1.1",
+  "version_name": "0.1.1",
   "manifest_version": 3,
   "default_locale": "en",
   "minimum_chrome_version": "88",
@@ -15,7 +15,7 @@
     "128": "assets/img/Button@8x.png"
   },
   "background": {
-    "service_worker": "./background.global.js"
+    "service_worker": "./background.js"
   },
   "action": {
     "default_icon": {
@@ -28,7 +28,7 @@
   },
   "content_scripts": [
     {
-      "js": ["./content.global.js"],
+      "js": ["./content.js"],
       "matches": ["http://*/*", "https://*/*"],
       "run_at": "document_idle"
     }

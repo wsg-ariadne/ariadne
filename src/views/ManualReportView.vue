@@ -19,6 +19,7 @@
         v-for="reason in reasons"
         :key="reason.key"
         :checkbox-key="reason.key"
+        :disabled="reason.disabled"
         :value="selectedReasons.includes(reason.key)"
         @update:value="handleReasonChange"
         class="mb-4"
@@ -37,13 +38,24 @@
         ></textarea>
       </div>
 
+      <!-- Privacy statement -->
+      <p class="mt-2 text-xs">
+        By clicking Submit, you allow Ariadne to submit a report to the Dionysus server
+        at {{ dionysusUrl }} containing information about this page,
+        along with any remarks you have provided.
+        <a href="https://ariadne.dantis.me/privacy" class="underline" target="_blank">
+          Click here to view our privacy policy.
+        </a>
+      </p>
+
       <!-- Form controls -->
       <div class="mt-8 grid gap-4 grid-rows-1 grid-cols-2">
         <!-- Submission button -->
         <BigButton
           centered-text
           :disabled="incompleteReport"
-          @click="submitReport">
+          @click="submitReport"
+        >
           Submit
         </BigButton>
 
@@ -64,7 +76,7 @@ import Checkbox from '@/components/Checkbox.vue'
 import Overlay from '@/components/Overlay.vue'
 
 export default defineComponent({
-  name: 'ReportPositiveView',
+  name: 'ManualReportView',
   components: {
     BigButton,
     Checkbox,
@@ -72,6 +84,7 @@ export default defineComponent({
   },
   data() {
     return {
+      dionysusUrl: import.meta.env.VITE_API_URL,
       selectedReasons: [],
       customReason: '',
       isLoading: false
@@ -89,22 +102,27 @@ export default defineComponent({
         {
           key: 'unclear_language',
           text: 'Unclear language',
-          description: 'The cookie banner does not explicitly or clearly ask for my consent to use cookies'
+          description: 'The cookie banner does not explicitly or clearly ask for my consent to use cookies',
+          disabled: false
         },
         {
           key: 'prefilled_options',
           text: 'Pre-filled options',
-          description: 'The cookie banner has options that were filled out for me, e.g., pre-checked checkboxes for different types of cookies'
+          // description: 'The cookie banner has options that were filled out for me, e.g., pre-checked checkboxes for different types of cookies',
+          description: 'Not currently supported',
+          disabled: true
         },
         {
           key: 'weighted_options',
           text: 'Weighted options',
-          description: 'The controls on the cookie banner are weighted, i.e., designed to bring more visual emphasis on one option over another'
+          description: 'The controls on the cookie banner are weighted, i.e., designed to bring more visual emphasis on one option over another',
+          disabled: false
         },
         {
           key: 'other',
           text: 'Others',
-          description: 'I noticed another type of deceptive design on the cookie banner that wasn\'t included above'
+          description: 'I noticed another type of deceptive design on the cookie banner that wasn\'t included above',
+          disabled: false
         }
       ]
     }
@@ -131,12 +149,6 @@ export default defineComponent({
     submitReport(e) {
       e.preventDefault()
       if (this.incompleteReport) return
-      console.log('Submitting report', {
-        selectedReasons: this.selectedReasons,
-        customReason: this.customReason,
-        url: this.store.url,
-        isRunningInExtension: this.store.isRunningInExtension
-      })
 
       // Send report to backend via POST
       this.isLoading = true

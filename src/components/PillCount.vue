@@ -2,7 +2,7 @@
   <div
     class="inline-flex align-middle justify-center items-center rounded-full px-2"
     :class="{
-      'bg-adn-purple': highlighted,
+      'bg-adn-teal': highlighted,
       'bg-adn-dark': !highlighted,
       'py-0.5 min-w-[2rem]': compact,
       'py-1 min-w-[3rem]': !compact

@@ -17,15 +17,22 @@ const router = createRouter({
       },
     },
     {
-      path: '/report-positive',
-      name: 'report-positive',
+      path: '/report-manual',
+      name: 'report-manual',
       meta: { title: 'Report Deceptive Design' },
-      // route level code-splitting
-      // this generates a separate chunk (About.[hash].js) for this route
-      // which is lazy-loaded when the route is visited.
-      component: () => import('../views/ReportPositiveView.vue')
+      component: () => import('../views/ManualReportView.vue')
+    },
+    {
+      path: '/report-auto',
+      name: 'report-auto',
+      meta: { title: 'Submit Detection Feedback' },
+      component: () => import('../views/AutoReportView.vue')
     }
-  ]
+  ],
+  scrollBehavior(to, from, savedPosition) {
+    // always scroll to top
+    return { top: 0 }
+  },
 })
 
 export default router
