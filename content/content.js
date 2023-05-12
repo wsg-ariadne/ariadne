@@ -71,22 +71,11 @@ function performDetection() {
     }
 
     // Perform visual detection
-    if (bannerDiv === null) {
-        console.log("[content] No banner found, taking screenshot of viewport");
-
-        // Take screenshot of viewport
-        html2canvas(document.body, {
-            x: window.scrollX,
-            y: window.scrollY,
-            width: window.innerWidth,
-            height: window.innerHeight,
-        }).then(canvasHandler);
-        return;
-    } else {
+    if (bannerDiv !== null) {
         console.log("[content] Taking screenshot of banner");
-
-        // Take screenshot of banner
         html2canvas(bannerDiv).then(canvasHandler);
+    } else {
+        console.log("[content] No banner div found, skipping visual detection");
     }
 }
 
