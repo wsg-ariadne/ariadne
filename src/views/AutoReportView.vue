@@ -142,14 +142,15 @@ export default defineComponent({
       // Assemble request body
       const body = {
         page_url: 'http://' + this.store.currentDomain + this.store.currentPath,
-        calliope_tripped: this.store.calliopeTripped,
-        janus_result: this.store.janusResult,
         vote: this.vote
       }
-      console.log(body)
+      if (this.store.calliopeTripped !== '') {
+        body.calliope_tripped = this.store.calliopeTripped === 'true'
+      }
+      if (this.store.janusResult !== '') body.janus_result = this.store.janusResult
+      if (this.attachText && this.store.calliopeText !== '') body.calliope_text = this.store.calliopeText
+      if (this.attachImage && this.store.janusScreenshot !== '') body.janus_screenshot = this.store.janusScreenshot
       if (this.remarks !== '') body.remarks = this.remarks
-      if (this.attachText) body.calliope_text = this.store.calliopeText
-      if (this.attachImage) body.janus_screenshot = this.store.janusScreenshot
 
       // Send report to backend via POST
       this.isLoading = true
