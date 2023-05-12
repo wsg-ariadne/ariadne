@@ -25,6 +25,7 @@ export default (request, sender, sendResponse) => {
         .then((tab) => tab.url)
         .then((url) => setTransaction('calliope', {
           url,
+          cookieBannerText,
           tripped: !data.is_good
         }))
         .then(() => sendResponse(data));
@@ -43,7 +44,8 @@ export default (request, sender, sendResponse) => {
         .then((tab) => tab.url)
         .then((url) => setTransaction('janus', {
           url,
-          tripped: data.classification === 'weighted'
+          imageData,
+          result: data.classification
         }))
         .then(() => sendResponse(data));
     });
@@ -54,24 +56,28 @@ export default (request, sender, sendResponse) => {
       const tabUrl = request.args.url;
       let calliopeResult = false;
       let janusResult = false;
+      let cookieBannerText = '';
+      let imageData = '';
 
       // Try fetching results from DB
       try {
         const cachedCalliope = await getTransaction('calliope', tabUrl);
         calliopeResult = cachedCalliope.tripped;
+        cookieBannerText = cachedCalliope.cookieBannerText;
       } catch (_) {
         // do nothing
       }
       try {
         const cachedJanus = await getTransaction('janus', tabUrl);
-        janusResult = cachedJanus.tripped;
+        janusResult = cachedJanus.result;
+        imageData = cachedJanus.imageData;
       } catch (_) {
         // do nothing
       }
 
       // If we have cached stats, send them before requesting new ones
       let deferSending = false;
-      let stats = { calliopeResult, janusResult };
+      let stats = { calliopeResult, janusResult, cookieBannerText, imageData };
       try {
         stats = { ...stats, ...await getTransaction('stats', tabUrl) };
         console.log('listeners/message: Sending stats to tab', tabUrl, stats)
