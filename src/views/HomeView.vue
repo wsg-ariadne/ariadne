@@ -156,16 +156,17 @@ export default defineComponent({
           count: 0
         }
       },
-      calliopeTripped: false,
-      janusTripped: false
     }
   },
   computed: {
+    janusTripped() {
+      return this.store.janusResult === 'weighted'
+    },
     tripped() {
-      return this.calliopeTripped || this.janusTripped
+      return this.store.calliopeTripped || this.janusTripped
     },
     trippedText() {
-      if (this.calliopeTripped) {
+      if (this.store.calliopeTripped) {
         if (this.janusTripped) {
           return 'unclear language and weighted options'
         }
@@ -203,8 +204,12 @@ export default defineComponent({
             args: { url }
           })
             .then((response) => {
-              this.calliopeTripped = response.calliopeResult
-              this.janusTripped = response.janusResult
+              this.store.setDetectionData({
+                calliopeTripped: response.calliopeResult,
+                calliopeText: response.cookieBannerText,
+                janusResult: response.janusResult,
+                janusScreenshot: response.imageData
+              })
               return response.stats
             })
             .then((stats) => {
