@@ -15,7 +15,7 @@
     "128": "assets/img/Button@8x.png"
   },
   "background": {
-    "service_worker": "./background.global.js"
+    "service_worker": "./background.js"
   },
   "action": {
     "default_icon": {
@@ -28,7 +28,7 @@
   },
   "content_scripts": [
     {
-      "js": ["./content.global.js"],
+      "js": ["./content.js"],
       "matches": ["http://*/*", "https://*/*"],
       "run_at": "document_idle"
     }
