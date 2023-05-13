@@ -95,7 +95,7 @@ export default (request, sender, sendResponse) => {
             success: false,
             error
           });
-        })
+        }, false);
       }
     })();
   }

@@ -13,7 +13,7 @@ export default (activeInfo) => {
       if (tab.url.startsWith('chrome://')) {
         return Promise.reject('listeners/tabChange: Ignoring chrome:// URL');
       }
-      return new Promise((res, rej) => getStats(tab.url, () => res(tab.url), rej));
+      return new Promise((res, rej) => getStats(tab.url, () => res(tab.url), rej, false));
     })
       .then(async (url) => {
         console.log('listeners/tabChange: Stats refreshed');
@@ -27,5 +27,8 @@ export default (activeInfo) => {
         toggleBadge(enabled);
         updateBadgeText(stats);
       })
-      .catch((err) => console.log(err));
+      .catch((err) => {
+        console.log(err);
+        updateBadgeText();  // Set badge text to empty
+      });
 }

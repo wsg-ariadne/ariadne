@@ -19,14 +19,11 @@ export const updateBadgeText = (stats) => {
       stats.hasOwnProperty("specific_reports") && stats["success"]) {
       const count = stats.specific_reports.count;
       console.log('browser/badge: Setting badge text to', count)
-      if (count > 0) {
-        action.setBadgeText({
-          text: count.toString(),
-        });
-        return;
-      }
+      action.setBadgeText({
+        text: count.toString(),
+      });
     }
     action.setBadgeText({
-      text: "0",
+      text: "",
     });
 }
