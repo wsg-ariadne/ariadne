@@ -137,6 +137,9 @@
         </BigButton>
       </RouterLink>
     </div>
+
+    <!-- Version -->
+    <p class="mt-4 text-xs text-center text-adn-gray">Ariadne version {{ extensionVersion }}</p>
   </main>
 </template>
 
@@ -169,6 +172,7 @@ export default defineComponent({
   },
   data() {
     return {
+      extensionVersion: 'n/a',
       isDisabled: false,
       isLoading: true,
       specificReports: 0,
@@ -217,6 +221,14 @@ export default defineComponent({
     // Check if we're running in Chrome in the first place
     if (browser && browser.tabs) {
       this.store.setRunningInExtension(true)
+
+      // Get extension version
+      const manifest = browser.runtime.getManifest()
+      if (manifest.version_name) {
+        this.extensionVersion = manifest.version_name
+      } else {
+        this.extensionVersion = manifest.version
+      }
       
       browser.tabs.query({ active: true, currentWindow: true })
         .then((tabs) => {
