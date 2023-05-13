@@ -50,7 +50,7 @@ export default (request, sender, sendResponse) => {
         .then(() => sendResponse(data));
     });
   } else if (request.action === "requestStats") {
-    console.log(`listeners/message: Received stats request from tab "${sender.tab.title}"`);
+    console.log('listeners/message: Received stats request from', sender);
 
     (async () => {
       const tabUrl = request.args.url;
@@ -80,7 +80,7 @@ export default (request, sender, sendResponse) => {
       let stats = { calliopeResult, janusResult, cookieBannerText, imageData };
       try {
         stats = { ...stats, ...await getTransaction('stats', tabUrl) };
-        console.log(`listeners/message: Sending stats to tab "${sender.tab.title}"`)
+        console.log('listeners/message: Sending stats to', sender)
         sendResponse(stats);
         deferSending = true;
       } catch (e) {
@@ -88,14 +88,14 @@ export default (request, sender, sendResponse) => {
       } finally {
         getStats(tabUrl, (newStats) => {
           stats = { ...stats, ...newStats };
-          console.log(`listeners/message: Revalidated stats cache for tab "${sender.tab.title}"`)
+          console.log('listeners/message: Refreshed stats for', sender)
           if (!deferSending) sendResponse(stats);
         }, (error) => {
           sendResponse({
             success: false,
             error
           });
-        }, false);
+        }, true);
       }
     })();
   }
