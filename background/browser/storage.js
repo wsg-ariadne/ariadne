@@ -1,7 +1,7 @@
 const openDatabase = () => new Promise((res, rej) => {
-  const request = indexedDB.open('ariadne', 1);
+  const request = indexedDB.open('ariadne');
   request.onerror = (event) => {
-    console.error(`browser/storage: Error ${event.target.errorCode}`)
+    console.error(`storage: Error ${event.target.errorCode}`)
     rej();
   };
   
@@ -16,6 +16,10 @@ const openDatabase = () => new Promise((res, rej) => {
     // Create storage for badge states per tab
     const badgeStateStore = db.createObjectStore('badgeStates', { keyPath: 'tabId' })
     badgeStateStore.createIndex('tabId', 'tabId', { unique: true })
+
+    // Create storage for URLs per tab
+    const tabUrlStore = db.createObjectStore('tabUrls', { keyPath: 'tabId' })
+    tabUrlStore.createIndex('tabId', 'tabId', { unique: true })
   
     // Create storage for Calliope results per URL
     const calliopeStore = db.createObjectStore('calliope', { keyPath: 'url' })
@@ -26,21 +30,16 @@ const openDatabase = () => new Promise((res, rej) => {
     janusStore.createIndex('url', 'url', { unique: true })
   }
 
-  request.onsuccess = (event) => {
-    console.log('browser/storage: Database ready');
-    res(event.target.result);
-  }
+  request.onsuccess = (event) => res(event.target.result);
 });
 
 
 export const setTransaction = async (store, data) => {
-  console.log('browser/storage(set): Opening DB');
-
   const db = await openDatabase();
   const t = db.transaction(store, 'readwrite');
   const s = t.objectStore(store);
   return await new Promise((res, rej) => {
-    t.oncomplete = () => console.log('browser/storage(set): Complete');
+    t.oncomplete = () => console.log(`storage(set): Saved to ${store}:`, data);
     t.onerror = (e) => rej(e);
 
     const r = s.put(data);
@@ -49,13 +48,11 @@ export const setTransaction = async (store, data) => {
 }
 
 export const getTransaction = async (store, key) => {
-  console.log('browser/storage(get): Opening DB');
-
   const db = await openDatabase();
   const t = db.transaction(store, 'readonly');
   const s = t.objectStore(store);
   return await new Promise((res, rej) => {
-    t.oncomplete = () => console.log('browser/storage(get): Complete');
+    t.oncomplete = () => console.log(`storage(get): Got "${key}" from ${store}`);
     t.onerror = (ev) => rej(ev);
 
     const r = s.get(key);
@@ -64,14 +61,12 @@ export const getTransaction = async (store, key) => {
 }
 
 export const deleteTransaction = async (store, key) => {
-  console.log('browser/storage(delete): Opening DB');
-
   const db = await openDatabase();
   const t = db.transaction(store, 'readwrite');
   const s = t.objectStore(store);
   return await new Promise((res, rej) => {
     t.oncomplete = () => {
-      console.log('browser/storage(delete): Complete');
+      console.log(`storage(delete): Deleted "${key}" from ${store}`);
       res();
     };
     t.onerror = (e) => rej(e);

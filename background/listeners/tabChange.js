@@ -7,23 +7,28 @@ export default (activeInfo) => {
   // Get URL of active tab
   browser.tabs.get(activeInfo.tabId)
     .then((tab) => {
-      console.log('listeners/tabChange: Tab changed to', tab.url);
+      console.log('listeners/tabChange: Tab changed to', activeInfo.tabId);
 
-      // Fetch latest stats
-      return new Promise((res, rej) => {
-        getStats(tab.url, () => res(tab.url), rej);
-      })
-    })
-    .then(async (url) => {
-      console.log('listeners/tabChange: Stats refreshed');
-      let enabled = false;
-      try {
-        enabled = (await getTransaction('badgeStates', activeInfo.tabId)).enabled;
-      } catch (_) {
-        // do nothing
+      // Fetch latest stats if URL does not start with chrome://
+      if (tab.url.startsWith('chrome://')) {
+        return Promise.reject('listeners/tabChange: Ignoring chrome:// URL');
       }
-      const { stats } = await getTransaction('stats', url);
-      toggleBadge(enabled);
-      updateBadgeText(stats);
-    });
+      return new Promise((res, rej) => getStats(tab.url, () => res(tab.url), rej, false));
+    })
+      .then(async (url) => {
+        console.log('listeners/tabChange: Stats refreshed');
+        let enabled = false;
+        try {
+          enabled = (await getTransaction('badgeStates', activeInfo.tabId)).enabled;
+        } catch (_) {
+          // do nothing
+        }
+        const { stats } = await getTransaction('stats', url);
+        toggleBadge(enabled);
+        updateBadgeText(stats);
+      })
+      .catch((err) => {
+        console.log(err);
+        updateBadgeText();  // Set badge text to empty
+      });
 }

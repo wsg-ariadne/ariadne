@@ -14,7 +14,7 @@ export default (request, sender, sendResponse) => {
   } else if (request.action === "detection") {
     // Listen to detection requests from content scripts
     const cookieBannerText = request.args.body;
-    console.log('listeners/message: Calliope request received from tab', sender.tab.id, 'with body:', cookieBannerText);
+    console.log('listeners/message: Calliope request received from tab', sender.tab.id);
     
     // POST to API
     classifyText(cookieBannerText, (data) => {
@@ -50,7 +50,7 @@ export default (request, sender, sendResponse) => {
         .then(() => sendResponse(data));
     });
   } else if (request.action === "requestStats") {
-    console.log("listeners/message: Received stats request from popup", request, sender);
+    console.log('listeners/message: Received stats request from', sender);
 
     (async () => {
       const tabUrl = request.args.url;
@@ -80,7 +80,7 @@ export default (request, sender, sendResponse) => {
       let stats = { calliopeResult, janusResult, cookieBannerText, imageData };
       try {
         stats = { ...stats, ...await getTransaction('stats', tabUrl) };
-        console.log('listeners/message: Sending stats to tab', tabUrl, stats)
+        console.log('listeners/message: Sending stats to', sender)
         sendResponse(stats);
         deferSending = true;
       } catch (e) {
@@ -88,18 +88,14 @@ export default (request, sender, sendResponse) => {
       } finally {
         getStats(tabUrl, (newStats) => {
           stats = { ...stats, ...newStats };
-          if (!deferSending) {
-            console.log('listeners/message: Sending stats to tab', tabUrl, stats)
-            sendResponse(stats);
-          } else {
-            console.log('listeners/message: Revalidated cache for tab', tabUrl)
-          }
+          console.log('listeners/message: Refreshed stats for', sender)
+          if (!deferSending) sendResponse(stats);
         }, (error) => {
           sendResponse({
             success: false,
             error
           });
-        })
+        }, true);
       }
     })();
   }

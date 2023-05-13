@@ -3,7 +3,7 @@
   "short_name": "__MSG_appShortName__",
   "description": "__MSG_appDescription__",
   "homepage_url": "https://ariadne.dantis.me",
-  "version": "0.1.1",
+  "version": "__PKG_version__",
   "manifest_version": 2,
   "default_locale": "en",
   "permissions": [
