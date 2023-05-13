@@ -7,7 +7,7 @@ export default (activeInfo) => {
   // Get URL of active tab
   browser.tabs.get(activeInfo.tabId)
     .then((tab) => {
-      console.log('listeners/tabChange: Tab changed to', tab.url);
+      console.log('listeners/tabChange: Tab changed to', activeInfo.tabId);
 
       // Fetch latest stats
       return new Promise((res, rej) => {

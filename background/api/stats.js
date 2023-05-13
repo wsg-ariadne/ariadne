@@ -4,7 +4,7 @@ import { setTransaction } from '../browser/storage';
 
 export const getStats = (tabUrl, successCallback, errorCallback) => {
   ApiPost('/reports/by-url', {'page_url': tabUrl}, (data) => {
-    console.log('api/stats: Got stats for URL ' + tabUrl + ':', data);
+    console.log('api/stats: Got stats for URL ' + tabUrl, data);
     setTransaction('stats', {
       url: tabUrl,
       stats: data
