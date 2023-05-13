@@ -1,7 +1,7 @@
 const openDatabase = () => new Promise((res, rej) => {
   const request = indexedDB.open('ariadne');
   request.onerror = (event) => {
-    console.error(`browser/storage: Error ${event.target.errorCode}`)
+    console.error(`storage: Error ${event.target.errorCode}`)
     rej();
   };
   
@@ -39,7 +39,7 @@ export const setTransaction = async (store, data) => {
   const t = db.transaction(store, 'readwrite');
   const s = t.objectStore(store);
   return await new Promise((res, rej) => {
-    t.oncomplete = () => console.log(`browser/storage(set): Put ${data} in ${store}`);
+    t.oncomplete = () => console.log(`storage(set): Saved to ${store}:`, data);
     t.onerror = (e) => rej(e);
 
     const r = s.put(data);
@@ -52,7 +52,7 @@ export const getTransaction = async (store, key) => {
   const t = db.transaction(store, 'readonly');
   const s = t.objectStore(store);
   return await new Promise((res, rej) => {
-    t.oncomplete = () => console.log(`browser/storage(get): Got ${key} from ${store}`);
+    t.oncomplete = () => console.log(`storage(get): Got "${key}" from ${store}`);
     t.onerror = (ev) => rej(ev);
 
     const r = s.get(key);
@@ -66,7 +66,7 @@ export const deleteTransaction = async (store, key) => {
   const s = t.objectStore(store);
   return await new Promise((res, rej) => {
     t.oncomplete = () => {
-      console.log(`browser/storage(delete): Deleted ${key} from ${store}`);
+      console.log(`storage(delete): Deleted "${key}" from ${store}`);
       res();
     };
     t.onerror = (e) => rej(e);
