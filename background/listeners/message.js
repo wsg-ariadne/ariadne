@@ -14,7 +14,7 @@ export default (request, sender, sendResponse) => {
   } else if (request.action === "detection") {
     // Listen to detection requests from content scripts
     const cookieBannerText = request.args.body;
-    console.log('listeners/message: Calliope request received from tab', sender.tab.id, 'with body:', cookieBannerText);
+    console.log('listeners/message: Calliope request received from tab', sender.tab.id);
     
     // POST to API
     classifyText(cookieBannerText, (data) => {
