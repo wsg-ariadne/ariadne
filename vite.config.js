@@ -17,7 +17,7 @@ const copyManifest = () => {
       const sourceFilename = process.env.MANIFEST_V3 == 'true' ? 'v3.json' : 'v2.json'
       const destPath = resolve(outDir, 'manifest.json')
       fs.copyFileSync(resolve('./manifest', sourceFilename), destPath)
-      console.log(`Copied ${sourceFilename} to ${destPath}`)
+      console.log(`\nCopied ${sourceFilename} to ${destPath}\n`)
     }
   }
 }

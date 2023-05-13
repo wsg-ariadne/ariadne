@@ -61,6 +61,8 @@ npm run dev
 npm run dev:v3
 ```
 
+Vite will automatically rebuild the extension when you make changes to the source code. You will need to reload the extension in your browser to see the changes.
+
 In development mode, the extension will attempt to contact [Dionysus](https://github.com/wsg-ariadne/dionysus) at `http://localhost:5000` for the data. Make sure to run Dionysus locally before running the extension in this mode. You can change this by setting the `VITE_API_URL` environment variable in the `.env.development` file.
 
 To build the extension **in production mode**, run:
