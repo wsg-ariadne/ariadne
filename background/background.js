@@ -2,6 +2,7 @@ import * as browser from 'webextension-polyfill';
 import {
   messageListener,
   tabChangeListener,
+  tabCloseListener,
   tabUrlChangeListener
 } from './listeners';
 
@@ -16,6 +17,7 @@ browser.runtime.onInstalled.addListener((details) => {
     // Register listeners
     browser.runtime.onMessage.addListener(messageListener);
     browser.tabs.onActivated.addListener(tabChangeListener);
+    browser.tabs.onRemoved.addListener(tabCloseListener);
     browser.tabs.onUpdated.addListener(tabUrlChangeListener);
   }
 });
