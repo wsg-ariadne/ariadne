@@ -15,6 +15,8 @@ module.exports = {
         'adn-turquoise': '#66CED6',
         'adn-teal': '#048BA8',
         'adn-border': '#C1B4C1',
+        'adn-gray': '#ADA1AD',
+        'adn-gray-dark': '#595359',
       },
       fontFamily: {
         'mono': ['IBM Plex Mono'],
