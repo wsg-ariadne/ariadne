@@ -11,7 +11,9 @@ export default (tabId, _) => {
   getTransaction('tabUrls', tabId)
     .then((url) => {
       // Delete Calliope and Janus results
-      deleteTransaction('calliope', url);
-      deleteTransaction('janus', url);
+      deleteTransaction('calliope', url)
+        .catch((err) => console.log('listeners/tabClose: No Calliope results to delete', err));
+      deleteTransaction('janus', url)
+        .catch((err) => console.log('listeners/tabClose: No Janus results to delete', err));
     })
 }
