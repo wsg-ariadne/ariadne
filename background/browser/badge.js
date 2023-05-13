@@ -22,6 +22,7 @@ export const updateBadgeText = (stats) => {
       action.setBadgeText({
         text: count.toString(),
       });
+      return;
     }
     action.setBadgeText({
       text: "",
