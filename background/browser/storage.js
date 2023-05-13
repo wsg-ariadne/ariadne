@@ -1,5 +1,5 @@
 const openDatabase = () => new Promise((res, rej) => {
-  const request = indexedDB.open('ariadne', 1);
+  const request = indexedDB.open('ariadne');
   request.onerror = (event) => {
     console.error(`browser/storage: Error ${event.target.errorCode}`)
     rej();
@@ -16,6 +16,10 @@ const openDatabase = () => new Promise((res, rej) => {
     // Create storage for badge states per tab
     const badgeStateStore = db.createObjectStore('badgeStates', { keyPath: 'tabId' })
     badgeStateStore.createIndex('tabId', 'tabId', { unique: true })
+
+    // Create storage for URLs per tab
+    const tabUrlStore = db.createObjectStore('tabUrls', { keyPath: 'tabId' })
+    tabUrlStore.createIndex('tabId', 'tabId', { unique: true })
   
     // Create storage for Calliope results per URL
     const calliopeStore = db.createObjectStore('calliope', { keyPath: 'url' })
@@ -34,8 +38,6 @@ const openDatabase = () => new Promise((res, rej) => {
 
 
 export const setTransaction = async (store, data) => {
-  console.log('browser/storage(set): Opening DB');
-
   const db = await openDatabase();
   const t = db.transaction(store, 'readwrite');
   const s = t.objectStore(store);
@@ -49,8 +51,6 @@ export const setTransaction = async (store, data) => {
 }
 
 export const getTransaction = async (store, key) => {
-  console.log('browser/storage(get): Opening DB');
-
   const db = await openDatabase();
   const t = db.transaction(store, 'readonly');
   const s = t.objectStore(store);

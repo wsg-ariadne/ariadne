@@ -1,9 +1,9 @@
 import messageListener from './message';
 import tabChangeListener from './tabChange';
-import tabUrlChangeListener from './tabUrlChange';
+import tabUpdateListener from './tabUpdate';
 
 export {
   messageListener,
   tabChangeListener,
-  tabUrlChangeListener
+  tabUpdateListener
 }
