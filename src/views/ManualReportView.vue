@@ -43,7 +43,7 @@
         By clicking Submit, you allow Ariadne to submit a report to the Dionysus server
         at {{ dionysusUrl }} containing information about this page,
         along with any remarks you have provided.
-        <a href="https://ariadne.dantis.me/privacy" class="underline" target="_blank">
+        <a href="https://wsg-ariadne.github.io/privacy" class="underline" target="_blank">
           Click here to view our privacy policy.
         </a>
       </p>

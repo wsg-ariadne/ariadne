@@ -138,8 +138,13 @@
       </RouterLink>
     </div>
 
-    <!-- Version -->
-    <p class="mt-4 text-xs text-center text-adn-gray">Ariadne version {{ extensionVersion }}</p>
+    <!-- Version and privacy policy -->
+    <p class="mt-4 text-xs text-center text-adn-gray">
+      Ariadne version {{ extensionVersion }}<br>
+      <a href="https://wsg-ariadne.github.io/privacy" class="underline" target="_blank">
+        Privacy policy
+      </a>
+    </p>
   </main>
 </template>
 
