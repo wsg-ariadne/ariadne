@@ -244,8 +244,8 @@ export default defineComponent({
           const url = tabs[0].url
           const urlObject = new URL(url)
 
-          // Disable if we're on an internal browser page, e.g. chrome://*
-          if (urlObject.protocol === 'chrome:') {
+          // Disable if we're on an internal browser page, e.g. chrome://* or about:
+          if (urlObject.protocol === 'chrome:' || urlObject.protocol === 'about:') {
             this.isDisabled = true
             return
           }

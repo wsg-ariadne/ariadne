@@ -9,9 +9,9 @@ export default (activeInfo) => {
     .then((tab) => {
       console.log('listeners/tabChange: Tab changed to', activeInfo.tabId);
 
-      // Fetch latest stats if URL does not start with chrome://
-      if (tab.url.startsWith('chrome://')) {
-        return Promise.reject('listeners/tabChange: Ignoring chrome:// URL');
+      // Fetch latest stats if URL does not start with chrome:// or about:
+      if (tab.url.startsWith('chrome://') || tab.url.startsWith('about:')) {
+        return Promise.reject('listeners/tabChange: Ignoring internal URL');
       }
       return new Promise((res, rej) => getStats(tab.url, () => res(tab.url), rej, false));
     })

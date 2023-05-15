@@ -8,8 +8,8 @@ export default (tabId, changeInfo, _) => {
     // Save URL to IndexedDB
     setTransaction('tabUrls', { tabId, url: changeInfo.url });
 
-    // Request fresh stats if not a chrome:// URL
-    if (changeInfo.url.startsWith('chrome://')) {
+    // Request fresh stats if not a chrome:// or about: URL
+    if (changeInfo.url.startsWith('chrome://') || changeInfo.url.startsWith('about:')) {
       return;
     }
     getStats(changeInfo.url, () => {}, () => {}, false);
