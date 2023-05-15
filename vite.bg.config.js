@@ -10,6 +10,7 @@ export default defineConfig({
       entry: './background/background.js',
       name: 'Ariadne'
     },
+    minify: process.env.MINIFY !== 'false',
     rollupOptions: {
       input: {
         background: new URL('./background/background.html', import.meta.url).pathname,

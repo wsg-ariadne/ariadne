@@ -10,6 +10,7 @@ export default defineConfig({
       entry: './content/content.js',
       name: 'Ariadne'
     },
+    minify: process.env.MINIFY !== 'false',
     rollupOptions: {
       output: {
         entryFileNames: 'content.js',

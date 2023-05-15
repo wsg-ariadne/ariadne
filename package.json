@@ -9,7 +9,7 @@
     "url": "https://github.com/wsg-ariadne/ariadne"
   },
   "scripts": {
-    "dev": "node dev.js",
+    "dev": "MINIFY=false node dev.js",
     "build:bg": "vite build --config vite.bg.config.js",
     "build:content": "vite build --config vite.content.config.js",
     "build:main": "vite build",
