@@ -7,7 +7,11 @@
   "manifest_version": 2,
   "default_locale": "en",
   "permissions": [
-    "tabs"
+    "http://*/*",
+    "https://*/*",
+    "tabs",
+    "storage",
+    "unlimitedStorage"
   ],
   "optional_permissions": [
     "<all_urls>"
@@ -17,7 +21,7 @@
   },
   "background": {
     "page": "background/background.html",
-    "persistent": false
+    "persistent": true
   },
   "browser_action": {
     "default_icon": {
@@ -32,7 +36,8 @@
     {
       "js": ["./content.js"],
       "matches": ["http://*/*", "https://*/*"],
-      "run_at": "document_idle"
+      "run_at": "document_idle",
+      "all_frames": true
     }
   ]
 }
