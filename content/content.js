@@ -80,8 +80,11 @@ function performDetection() {
 }
 
 // Wait for DOM to load
-document.onreadystatechange = () => {
+let onReadyFired = false;
+function onReady() {
+    if (onReadyFired) { return; }
     if (document.readyState !== "complete") { return; }
+    onReadyFired = true;
 
     // Call Report API for stats
     browser.runtime.sendMessage({
@@ -94,4 +97,8 @@ document.onreadystatechange = () => {
     // Wait for 5 sec
     console.log("[content] DOM is now ready, waiting for 5 sec before performing detection");
     setTimeout(performDetection, 5000);
-};
+}
+document.onreadystatechange = onReady;
+
+// Also exec onReady() on page show
+window.addEventListener("pageshow", onReady);
